@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แจ้งงาน</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #fef3c7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      padding: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e40af;
+      margin-bottom: 20px;
+    }
+
+    label { font-weight: 500; }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 14px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: white;
+      cursor: pointer;
+    }
+
+    .loading {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h2>📋 แจ้งงาน</h2>
+
+    <label>Work Action</label>
+    <select id="action">
+      <option>ตั้งนั่งร้าน</option>
+      <option>รื้อนั่งร้าน</option>
+    </select>
+
+    <label>Work Type</label>
+    <select id="type">
+      <option>CM</option>
+      <option>SD</option>
+      <option>BD</option>
+      <option>QSD</option>
+      <option>ANSD</option>
+    </select>
+
+    <label>Description</label>
+    <textarea id="description" placeholder="ชื่องาน"></textarea>
+
+    <label>Contact</label>
+    <input id="contact" placeholder="ชื่อ-เบอร์โทรหน้างาน">
+
+    <label>Area</label>
+    <input id="area" placeholder="เช่น PM1">
+
+    <label>Location</label>
+    <select id="location">
+      <option value="Internal">Internal</option>
+      <option value="External">External</option>
+    </select>
+
+    <label>Due Date</label>
+    <input type="date" id="duedate">
+
+    <button onclick="sendData()">🚀 ส่งข้อมูล</button>
+    <div class="loading" id="loading"></div>
+  </div>
+</div>
+
+<script>
+  async function initLIFF() {
+    await liff.init({ liffId: "2009765392-ExXyR18l" });
+
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
+  }
+
+  initLIFF();
+
+  async function sendData() {
+    const btn = document.querySelector("button");
+    const loading = document.getElementById("loading");
+
+    btn.disabled = true;
+    loading.innerText = "กำลังส่ง...";
+
+    try {
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      // ✅ ใช้ displayName (ชื่อ)
+      let userName = "ไม่ทราบชื่อ";
+
+      try {
+        const profile = await liff.getProfile();
+        userId = profile.userId;                 	
+	userName = profile.displayName;
+      } catch (e) {
+        console.error("LIFF ERROR:", e);
+      }
+
+      const data = {
+        userId: userId,          
+      	name: userName, 
+        action: document.getElementById("action").value,
+        type: document.getElementById("type").value,
+        description: document.getElementById("description").value,
+        contact: document.getElementById("contact").value,
+        area: document.getElementById("area").value,
+        location: document.getElementById("location").value,
+        dueDate: document.getElementById("duedate").value
+      };
+
+      console.log("DATA:", data);
+
+      await fetch("https://script.google.com/macros/s/AKfycbw9qajk_kFqZnGUOgyllEVYXgM8rhWzniwLSHs0bKRWlxezI1iyTywJbaAOEEaxZWY/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      loading.innerText = "✅ ส่งสำเร็จ";
+
+    } catch (err) {
+      console.error(err);
+      loading.innerText = "❌ error";
+    }
+
+    btn.disabled = false;
+  }
+</script>
+
+</body>
+</html>
