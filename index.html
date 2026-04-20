@@ -119,9 +119,6 @@
 </div>
 
 <script>
-  let userId = "";
-  let userName = "";
-
   async function initLIFF() {
     await liff.init({ liffId: "2009765392-ExXyR18l" });
 
@@ -129,22 +126,37 @@
       liff.login();
       return;
     }
-
-    const profile = await liff.getProfile();
-    userId = profile.userId;
-    userName = profile.displayName;
   }
 
   initLIFF();
 
   async function sendData() {
+    const btn = document.querySelector("button");
     const loading = document.getElementById("loading");
+
+    btn.disabled = true;
     loading.innerText = "กำลังส่ง...";
 
     try {
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      // ✅ ใช้ displayName (ชื่อ)
+      let userName = "ไม่ทราบชื่อ";
+
+      try {
+        const profile = await liff.getProfile();
+        userId = profile.userId;                 	
+	userName = profile.displayName;
+      } catch (e) {
+        console.error("LIFF ERROR:", e);
+      }
+
       const data = {
-        userId: userId,
-        name: userName,
+        userId: userId,          
+      	name: userName, 
         action: document.getElementById("action").value,
         type: document.getElementById("type").value,
         description: document.getElementById("description").value,
@@ -154,27 +166,25 @@
         dueDate: document.getElementById("duedate").value
       };
 
-      const res = await fetch("https://script.google.com/macros/s/AKfycbw9qajk_kFqZnGUOgyllEVYXgM8rhWzniwLSHs0bKRWlxezI1iyTywJbaAOEEaxZWY/exec", {
+      console.log("DATA:", data);
+
+      await fetch("https://script.google.com/macros/s/AKfycbw9qajk_kFqZnGUOgyllEVYXgM8rhWzniwLSHs0bKRWlxezI1iyTywJbaAOEEaxZWY/exec", {
         method: "POST",
+                mode: "no-cors",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
       });
 
-      const result = await res.json();
-      console.log(result);
-
-      if (result.status === 200) {
-        loading.innerText = "✅ ส่งสำเร็จ + LINE แจ้งแล้ว";
-      } else {
-        loading.innerText = "⚠️ ส่งได้ แต่ LINE มีปัญหา";
-      }
+      loading.innerText = "✅ ส่งสำเร็จ";
 
     } catch (err) {
       console.error(err);
       loading.innerText = "❌ error";
     }
+
+    btn.disabled = false;
   }
 </script>
 
