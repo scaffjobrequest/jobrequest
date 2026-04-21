@@ -119,50 +119,73 @@
 </div>
 
 <script>
-async function submitForm() {
-  let userId = "";
-  let userName = "ไม่ทราบชื่อ";
+  async function initLIFF() {
+    await liff.init({ liffId: "2009765392-ExXyR18l" });
 
-  try {
-    const profile = await liff.getProfile();
-    userId = profile.userId;
-    userName = profile.displayName;
-  } catch (e) {
-    console.error("LIFF ERROR:", e);
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
   }
 
-  // ✅ ดึงค่าจากฟอร์ม
-  const data = {
-    userId: userId,
-    name: userName,
-    action: document.getElementById("action")?.value || "",
-    type: document.getElementById("type")?.value || "",
-    description: document.getElementById("description")?.value || "",
-    contact: document.getElementById("contact")?.value || "",
-    area: document.getElementById("area")?.value || "",
-    location: document.getElementById("location")?.value || "",
-    dueDate: document.getElementById("duedate")?.value || ""
-  };
+  initLIFF();
 
-  // 🔥 debug ดูค่าจริง
-  alert(JSON.stringify(data));
+  async function sendData() {
+    const btn = document.querySelector("button");
+    const loading = document.getElementById("loading");
 
-  try {
-    await fetch("https://script.google.com/macros/s/AKfycbzSBPvf0s9VplepY70yQUqyr_CjMfxQQSghjswn6FMAlULVsodDsPKHqVhK_ga_0u7u/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify(data)
-    });
+    btn.disabled = true;
+    loading.innerText = "กำลังส่ง...";
 
-    alert("ส่งข้อมูลเรียบร้อย ✅");
+    try {
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
 
-  } catch (err) {
-    console.error(err);
-    alert("ส่งไม่สำเร็จ ❌");
+      // ✅ ใช้ displayName (ชื่อ)
+      let userName = "ไม่ทราบชื่อ";
+
+      try {
+        const profile = await liff.getProfile();
+        userId = profile.userId;                 	
+	userName = profile.displayName;
+      } catch (e) {
+        console.error("LIFF ERROR:", e);
+      }
+
+      const data = {
+        userId: userId,          
+      	name: userName, 
+        action: document.getElementById("action").value,
+        type: document.getElementById("type").value,
+        description: document.getElementById("description").value,
+        contact: document.getElementById("contact").value,
+        area: document.getElementById("area").value,
+        location: document.getElementById("location").value,
+        dueDate: document.getElementById("duedate").value
+      };
+
+      console.log("DATA:", data);
+
+      await fetch("https://script.google.com/macros/s/AKfycbzSBPvf0s9VplepY70yQUqyr_CjMfxQQSghjswn6FMAlULVsodDsPKHqVhK_ga_0u7u/exec", {
+  method: "POST",
+  mode: "no-cors", // ✅ ใส่กลับ
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+});
+
+      loading.innerText = "✅ ส่งสำเร็จ";
+
+    } catch (err) {
+      console.error(err);
+      loading.innerText = "❌ error";
+    }
+
+    btn.disabled = false;
   }
-}
 </script>
 
 </body>
