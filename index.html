@@ -170,6 +170,7 @@
 
       await fetch("https://script.google.com/macros/s/AKfycbw9qajk_kFqZnGUOgyllEVYXgM8rhWzniwLSHs0bKRWlxezI1iyTywJbaAOEEaxZWY/exec", {
   method: "POST",
+  mode: "no-cors", // ✅ ใส่กลับ
   headers: {
     "Content-Type": "application/json"
   },
