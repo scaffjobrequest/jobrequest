@@ -170,107 +170,66 @@
 
 <script>
 
-// =====================
-// REQUESTER
-// =====================
-
 function goRequester() {
 
-  window.location.href =
-    'user.html';
+  alert("Requester page coming soon");
 
 }
 
-// =====================
-// LOGIN MODAL
-// =====================
-
 function openLogin() {
 
-  document
-    .getElementById('loginModal')
-    .classList.remove('hidden');
+  document.getElementById("loginModal")
+    .style.display = "flex";
 
 }
 
 function closeLogin() {
 
-  document
-    .getElementById('loginModal')
-    .classList.add('hidden');
+  document.getElementById("loginModal")
+    .style.display = "none";
 
 }
-
-// =====================
-// LOGIN
-// =====================
 
 function login() {
 
-const username =
-document.getElementById('username').value;
+  const username =
+    document.getElementById("username").value;
 
-const password =
-document.getElementById('password').value;
+  const password =
+    document.getElementById("password").value;
 
-// =====================
-// APPROVER ACCOUNTS
-// =====================
+  const APPROVERS = [
 
-const APPROVERS = [
+    {
+      username: "pongsathorn",
+      password: "faci1347"
+    },
 
-```
-{
-  username: 'pongsathorn',
-  password: 'faci1347'
-},
+    {
+      username: "natthawan",
+      password: "faci7158"
+    }
 
-{
-  username: 'pattana',
-  password: 'faci4250'
-},
+  ];
 
-{
-  username: 'natthawan',
-  password: 'faci7158'
-}
+  const validUser = APPROVERS.find(function(user){
 
+    return (
+      user.username === username &&
+      user.password === password
+    );
 
-];
+  });
 
-// =====================
-// CHECK LOGIN
-// =====================
+  if(validUser){
 
-const validUser = APPROVERS.find(user => {
+    window.location.href = "approve.html";
 
+  } else {
 
-return (
-  user.username === username &&
-  user.password === password
-);
+    alert("Invalid username or password");
 
-
-});
-
-// =====================
-// LOGIN SUCCESS
-// =====================
-
-if(validUser) {
-
-
-window.location.href =
-  'approve.html';
-
-
-} else {
-
-
-alert('Invalid username or password');
-
-
-}
+  }
 
 }
 
