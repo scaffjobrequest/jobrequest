@@ -187,11 +187,22 @@ async function loadPendingJobs() {
 
             <div class="flex justify-center gap-2">
 
+              <!-- APPROVE -->
+
               <button
                 onclick="approveJob('${job.jobId}')"
                 class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
               >
                 Approve
+              </button>
+
+              <!-- REJECT -->
+
+              <button
+                onclick="rejectJob('${job.jobId}')"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+              >
+                Reject
               </button>
 
             </div>
@@ -249,6 +260,49 @@ async function approveJob(jobId) {
     console.error(error);
 
     alert('Approve Error');
+
+  }
+
+}
+
+// =====================
+// REJECT JOB
+// =====================
+
+async function rejectJob(jobId) {
+
+  const reason =
+    prompt('Enter reject reason');
+
+  if(!reason) return;
+
+  try {
+
+    const response = await fetch(
+
+      `${API_URL}?action=rejectJob&jobId=${jobId}&reason=${encodeURIComponent(reason)}&approver=manager1`
+
+    );
+
+    const result = await response.json();
+
+    if(result.success) {
+
+      alert('Job Rejected');
+
+      loadPendingJobs();
+
+    } else {
+
+      alert('Reject Failed');
+
+    }
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert('Reject Error');
 
   }
 
