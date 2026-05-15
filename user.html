@@ -362,7 +362,7 @@
     
     <p class="mb-2">
       <strong>Rejected Reason:</strong>
-      <span id="resultRejected Reason"></span>
+      <span id="resultRejectedReason"></span>
     </p>
 
     <p class="mb-2">
@@ -577,6 +577,9 @@ document
 
     document.getElementById('resultStatus')
     .innerText = result.status;
+    
+    document.getElementById('resultRejectedReason')
+    .innerText = result.rejectedReason || '-';
 
     document.getElementById('resultWorkType')
     .innerText = result.workType;
