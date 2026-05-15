@@ -207,30 +207,70 @@ function closeLogin() {
 
 function login() {
 
-  const username =
-    document.getElementById('username').value;
+const username =
+document.getElementById('username').value;
 
-  const password =
-    document.getElementById('password').value;
+const password =
+document.getElementById('password').value;
 
-  // HARDCODE LOGIN
+// =====================
+// APPROVER ACCOUNTS
+// =====================
 
-  const APPROVER_USER = 'pongsathorn';
-  const APPROVER_PASSWORD = 'faci1347';
+const APPROVERS = [
 
-  if(
-    username === APPROVER_USER &&
-    password === APPROVER_PASSWORD
-  ) {
+```
+{
+  username: 'pongsathorn',
+  password: 'faci1347'
+},
 
-    window.location.href =
-      'approve.html';
+{
+  username: 'pattana',
+  password: 'faci4250'
+},
 
-  } else {
+{
+  username: 'natthawan',
+  password: 'faci7158'
+}
 
-    alert('Invalid username or password');
 
-  }
+];
+
+// =====================
+// CHECK LOGIN
+// =====================
+
+const validUser = APPROVERS.find(user => {
+
+
+return (
+  user.username === username &&
+  user.password === password
+);
+
+
+});
+
+// =====================
+// LOGIN SUCCESS
+// =====================
+
+if(validUser) {
+
+
+window.location.href =
+  'approve.html';
+
+
+} else {
+
+
+alert('Invalid username or password');
+
+
+}
 
 }
 
