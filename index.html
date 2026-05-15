@@ -393,10 +393,14 @@ Check Status
 
   <script>
 
-    const API_URL =
-      'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
+    <script>
 
-    // MENU SWITCH
+const API_URL =
+'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
+
+// ====================
+// MENU ELEMENTS
+// ====================
 
 const requestSection =
 document.getElementById('requestSection');
@@ -410,182 +414,196 @@ document.getElementById('menuRequest');
 const menuStatus =
 document.getElementById('menuStatus');
 
+// ====================
+// ACTIVE MENU
+// ====================
+
 function setActiveMenu(activeBtn) {
 
-// RESET ALL
-
-document.querySelectorAll('.menu-btn')
-.forEach(btn => {
-
-
   document.querySelectorAll('.menu-btn')
-.forEach(btn => {
+  .forEach(btn => {
 
-btn.classList.remove('bg-blue-600');
-btn.classList.add('bg-slate-700');
+    btn.classList.remove('bg-blue-600');
+    btn.classList.add('bg-slate-700');
 
-});
+  });
 
+  activeBtn.classList.remove('bg-slate-700');
+  activeBtn.classList.add('bg-blue-600');
 
-
-// ACTIVE BUTTON
-
-activeBtn.classList.remove('bg-slate-700');
-activeBtn.classList.add('bg-blue-600');
 }
 
+// ====================
 // REQUEST MENU
+// ====================
 
 menuRequest.addEventListener('click', () => {
 
-requestSection.classList.remove('hidden');
+  requestSection.classList.remove('hidden');
 
-statusSection.classList.add('hidden');
+  statusSection.classList.add('hidden');
 
-setActiveMenu(menuRequest);
+  setActiveMenu(menuRequest);
 
 });
 
+// ====================
 // STATUS MENU
+// ====================
 
 menuStatus.addEventListener('click', () => {
 
-requestSection.classList.add('hidden');
+  requestSection.classList.add('hidden');
 
-statusSection.classList.remove('hidden');
+  statusSection.classList.remove('hidden');
 
-setActiveMenu(menuStatus);
+  setActiveMenu(menuStatus);
 
 });
 
-    // SUBMIT REQUEST
+// ====================
+// SUBMIT REQUEST
+// ====================
 
-    document
+document
+.getElementById('requestForm')
+.addEventListener('submit', async function(e) {
+
+  e.preventDefault();
+
+  const data = {
+
+    requesterName:
+    document.getElementById('requesterName').value,
+
+    department:
+    document.getElementById('department').value,
+
+    phoneNumber:
+    document.getElementById('phoneNumber').value,
+
+    workAction:
+    document.getElementById('workAction').value,
+
+    workType:
+    document.getElementById('workType').value,
+
+    description:
+    document.getElementById('description').value,
+
+    location:
+    document.getElementById('location').value,
+
+    area:
+    document.getElementById('area').value,
+
+    contact:
+    document.getElementById('contact').value,
+
+    dueDate:
+    document.getElementById('dueDate').value,
+
+    remark:
+    document.getElementById('remark').value
+
+  };
+
+  try {
+
+    const response = await fetch(API_URL, {
+
+      method: 'POST',
+
+      body: JSON.stringify(data)
+
+    });
+
+    const result = await response.json();
+
+    if(result.success) {
+
+      alert(
+        `Request Submitted Successfully\n\n` +
+        `Job ID: ${result.jobId}\n\n` +
+        `Please save this Job ID for tracking.`
+      );
+
+      document
       .getElementById('requestForm')
-      .addEventListener('submit', async function(e) {
+      .reset();
 
-        e.preventDefault();
+    } else {
 
-        const data = {
+      alert('Error submitting request');
 
-          requesterName:
-            document.getElementById('requesterName').value,
+    }
 
-          department:
-            document.getElementById('department').value,
+  } catch(error) {
 
-          phoneNumber:
-            document.getElementById('phoneNumber').value,
+    console.error(error);
 
-          workAction:
-            document.getElementById('workAction').value,
+    alert('System Error');
 
-          workType:
-            document.getElementById('workType').value,
+  }
 
-          description:
-            document.getElementById('description').value,
+});
 
-          location:
-            document.getElementById('location').value,
+// ====================
+// SEARCH JOB
+// ====================
 
-          area:
-            document.getElementById('area').value,
+document
+.getElementById('searchBtn')
+.addEventListener('click', async () => {
 
-          contact:
-            document.getElementById('contact').value,
+  const jobId =
+  document.getElementById('searchJobId').value;
 
-          dueDate:
-            document.getElementById('dueDate').value,
+  try {
 
-          remark:
-            document.getElementById('remark').value
-        };
+    const response = await fetch(
+      `${API_URL}?action=getJob&jobId=${jobId}`
+    );
 
-        try {
+    const result = await response.json();
 
-          const response = await fetch(API_URL, {
+    if(result.error) {
 
-            method: 'POST',
+      alert('Job not found');
 
-            body: JSON.stringify(data)
+      return;
 
-          });
-
-          const result = await response.json();
-
-          if(result.success) {
-
-            alert(
-              `Request Submitted Successfully\n\n` +
-              `Job ID: ${result.jobId}\n\n` +
-              `Please save this Job ID for tracking.`
-            );
-
-            document
-              .getElementById('requestForm')
-              .reset();
-
-          } else {
-
-            alert('Error submitting request');
-
-          }
-
-        } catch(error) {
-
-          console.error(error);
-
-          alert('System Error');
-
-        }
-
-      });
-
-    // SEARCH JOB
+    }
 
     document
-      .getElementById('searchBtn')
-      .addEventListener('click', async () => {
+    .getElementById('statusResult')
+    .classList.remove('hidden');
 
-        const jobId =
-          document.getElementById('searchJobId').value;
+    document.getElementById('resultJobId')
+    .innerText = result.jobId;
 
-        const response = await fetch(
-          `${API_URL}?action=getJob&jobId=${jobId}`
-        );
+    document.getElementById('resultStatus')
+    .innerText = result.status;
 
-        const result = await response.json();
+    document.getElementById('resultWorkType')
+    .innerText = result.workType;
 
-        if(result.error) {
+    document.getElementById('resultArea')
+    .innerText = result.area;
 
-          alert('Job not found');
+    document.getElementById('resultDueDate')
+    .innerText = result.dueDate;
 
-          return;
-        }
+  } catch(error) {
 
-        document
-          .getElementById('statusResult')
-          .classList.remove('hidden');
+    console.error(error);
 
-        document.getElementById('resultJobId')
-          .innerText = result.jobId;
+    alert('Search Error');
 
-        document.getElementById('resultStatus')
-          .innerText = result.status;
+  }
 
-        document.getElementById('resultWorkType')
-          .innerText = result.workType;
+});
 
-        document.getElementById('resultArea')
-          .innerText = result.area;
-
-        document.getElementById('resultDueDate')
-          .innerText = result.dueDate;
-
-      });
-
-  </script>
-
+</script>
 </body>
 </html>
