@@ -132,6 +132,31 @@ async function loadPendingJobs() {
 
     tbody.innerHTML = '';
 
+    // NO DATA
+
+    if(jobs.length === 0) {
+
+      tbody.innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="6"
+            class="border p-6 text-center text-slate-400"
+          >
+            No Pending Requests
+          </td>
+
+        </tr>
+
+      `;
+
+      return;
+
+    }
+
+    // LOOP JOBS
+
     jobs.forEach(job => {
 
       const row = `
@@ -158,21 +183,18 @@ async function loadPendingJobs() {
             ${job.dueDate}
           </td>
 
-          <td class="border p-3 flex gap-2">
+          <td class="border p-3">
 
-            <button
-              onclick="approveJob('${job.jobId}')"
-              class="bg-green-600 text-white px-4 py-2 rounded"
-            >
-              Approve
-            </button>
+            <div class="flex justify-center gap-2">
 
-            <button
-              onclick="rejectJob('${job.jobId}')"
-              class="bg-red-600 text-white px-4 py-2 rounded"
-            >
-              Reject
-            </button>
+              <button
+                onclick="approveJob('${job.jobId}')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+              >
+                Approve
+              </button>
+
+            </div>
 
           </td>
 
@@ -200,71 +222,33 @@ async function loadPendingJobs() {
 
 async function approveJob(jobId) {
 
-  const response = await fetch(API_URL, {
+  try {
 
-    method: 'POST',
+    const response = await fetch(
 
-    body: JSON.stringify({
+      `${API_URL}?action=approveJob&jobId=${jobId}&approver=manager1`
 
-      action: 'approveJob',
-      jobId: jobId
+    );
 
-    })
+    const result = await response.json();
 
-  });
+    if(result.success) {
 
-  const result = await response.json();
+      alert('Job Approved');
 
-  if(result.success) {
+      loadPendingJobs();
 
-    alert('Job Approved');
+    } else {
 
-    loadPendingJobs();
+      alert('Approve Failed');
 
-  } else {
+    }
 
-    alert('Approve Failed');
+  } catch(error) {
 
-  }
+    console.error(error);
 
-}
-
-// =====================
-// REJECT JOB
-// =====================
-
-async function rejectJob(jobId) {
-
-  const reason =
-    prompt('Enter reject reason');
-
-  if(reason === null) return;
-
-  const response = await fetch(API_URL, {
-
-    method: 'POST',
-
-    body: JSON.stringify({
-
-      action: 'rejectJob',
-      jobId: jobId,
-      reason: reason
-
-    })
-
-  });
-
-  const result = await response.json();
-
-  if(result.success) {
-
-    alert('Job Rejected');
-
-    loadPendingJobs();
-
-  } else {
-
-    alert('Reject Failed');
+    alert('Approve Error');
 
   }
 
