@@ -19,40 +19,19 @@
 
   <header class="bg-slate-900 text-white shadow-lg">
 
-<div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+```
+<div class="max-w-7xl mx-auto px-6 py-4">
 
-  <div>
+  <h1 class="text-2xl font-bold">
+    Scaffold Management System
+  </h1>
 
-    <h1 class="text-2xl font-bold">
-      Scaffold Management System
-    </h1>
-
-    <p class="text-slate-300 text-sm">
-      Request & Tracking Portal
-    </p>
-
-  </div>
-
-<nav class="flex gap-3 text-sm">
-
-  <button
-    id="menuRequest"
-    class="menu-btn bg-blue-600 px-4 py-2 rounded text-white"
-  >
-    Submit Request
-  </button>
-
-  <button
-    id="menuStatus"
-    class="menu-btn bg-slate-700 px-4 py-2 rounded text-white"
-  >
-    Check Status
-  </button>
-
-</nav>
-
+  <p class="text-slate-300 text-sm">
+    Request & Approval Portal
+  </p>
 
 </div>
+```
 
   </header>
 
@@ -60,538 +39,202 @@
 
   <main class="max-w-5xl mx-auto p-6">
 
-<!-- REQUEST SECTION -->
+```
+<!-- HERO -->
 
-<div
-  id="requestSection"
-  class="bg-white rounded-xl shadow-sm p-6"
->
+<div class="text-center py-12">
 
-  <h2 class="text-xl font-bold text-slate-800 mb-6">
-    Scaffold Request Form
+  <h2 class="text-4xl font-bold text-slate-800 mb-4">
+    Select Your Role
   </h2>
 
-  <form id="requestForm" class="space-y-6">
-
-    <!-- REQUESTER -->
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Requester Name
-        </label>
-
-        <input
-          type="text"
-          id="requesterName"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Department
-        </label>
-
-        <input
-          type="text"
-          id="department"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Phone Number
-        </label>
-
-        <input
-          type="text"
-          id="phoneNumber"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-    </div>
-
-    <!-- WORK -->
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Work Action
-        </label>
-
-        <select
-          id="workAction"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-          <option value="">Select</option>
-          <option value="Install">Install</option>
-          <option value="Remove">Remove</option>
-
-        </select>
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Work Type
-        </label>
-
-        <select
-          id="workType"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-          <option value="">Select</option>
-          <option value="CM">CM</option>
-          <option value="MSD">MSD</option>
-          <option value="QSD">QSD</option>
-          <option value="ANSD">ANSD</option>
-          <option value="BD">BD</option>
-
-        </select>
-
-      </div>
-
-    </div>
-
-    <!-- DESCRIPTION -->
-
-    <div>
-
-      <label class="block text-sm font-semibold mb-2">
-        Description
-      </label>
-
-      <input
-        type="text"
-        id="description"
-        required
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
-
-    </div>
-
-    <!-- LOCATION -->
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Location
-        </label>
-
-        <select
-          id="location"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-          <option value="">Select</option>
-          <option value="Internal">Internal</option>
-          <option value="External">External</option>
-
-        </select>
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Area
-        </label>
-
-        <input
-          type="text"
-          id="area"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-    </div>
-
-    <!-- CONTACT -->
-
-    <div>
-
-      <label class="block text-sm font-semibold mb-2">
-        Contact
-      </label>
-
-      <input
-        type="text"
-        id="contact"
-        required
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
-
-    </div>
-
-    <!-- DUE DATE -->
-
-    <div>
-
-      <label class="block text-sm font-semibold mb-2">
-        Due Date
-      </label>
-
-      <input
-        type="date"
-        id="dueDate"
-        required
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
-
-    </div>
-
-    <!-- PHOTO -->
-
-    <div>
-
-      <label class="block text-sm font-semibold mb-2">
-        Upload Photos (Max 5)
-      </label>
-
-      <input
-        type="file"
-        id="photos"
-        multiple
-        accept="image/*"
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
-
-    </div>
-
-    <!-- REMARK -->
-
-    <div>
-
-      <label class="block text-sm font-semibold mb-2">
-        Remark
-      </label>
-
-      <textarea
-        id="remark"
-        rows="4"
-        class="w-full border border-slate-300 rounded-lg p-3"
-      ></textarea>
-
-    </div>
-
-    <!-- BUTTON -->
-
-    <div class="pt-4">
-
-      <button
-        type="submit"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold"
-      >
-        Submit Request
-      </button>
-
-    </div>
-
-  </form>
+  <p class="text-slate-500 text-lg">
+    Scaffold Request Workflow System
+  </p>
 
 </div>
 
-<!-- STATUS SECTION -->
+<!-- ROLE CARDS -->
 
-<div
-  id="statusSection"
-  class="hidden bg-white rounded-xl shadow-sm p-6 mt-6"
->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-  <h2 class="text-xl font-bold text-slate-800 mb-6">
-    Check Request Status
+  <!-- REQUESTER -->
+
+  <div
+    onclick="goRequester()"
+    class="bg-white rounded-2xl shadow-sm p-10 cursor-pointer hover:shadow-lg transition"
+  >
+
+    <div class="text-center">
+
+      <div class="text-6xl mb-6">
+        📝
+      </div>
+
+      <h3 class="text-2xl font-bold text-slate-800 mb-3">
+        Requester
+      </h3>
+
+      <p class="text-slate-500">
+        Submit scaffold request and check job status
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- APPROVER -->
+
+  <div
+    onclick="openLogin()"
+    class="bg-white rounded-2xl shadow-sm p-10 cursor-pointer hover:shadow-lg transition"
+  >
+
+    <div class="text-center">
+
+      <div class="text-6xl mb-6">
+        ✅
+      </div>
+
+      <h3 class="text-2xl font-bold text-slate-800 mb-3">
+        Approver
+      </h3>
+
+      <p class="text-slate-500">
+        Review and approve pending requests
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+```
+
+  </main>
+
+  <!-- LOGIN MODAL -->
+
+  <div
+    id="loginModal"
+    class="hidden fixed inset-0 bg-black/50 flex items-center justify-center"
+  >
+
+```
+<div class="bg-white rounded-2xl p-8 w-full max-w-md">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Approver Login
   </h2>
 
-  <div class="flex gap-3 mb-6">
+  <div class="space-y-4">
 
     <input
       type="text"
-      id="searchJobId"
-      placeholder="Enter Job ID"
-      class="flex-1 border border-slate-300 rounded-lg p-3"
+      id="username"
+      placeholder="Username"
+      class="w-full border border-slate-300 rounded-lg p-3"
     >
 
-    <button
-      id="searchBtn"
-      class="bg-blue-600 text-white px-6 rounded-lg"
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      class="w-full border border-slate-300 rounded-lg p-3"
     >
-      Search
+
+  </div>
+
+  <div class="flex justify-end gap-3 mt-6">
+
+    <button
+      onclick="closeLogin()"
+      class="bg-slate-300 px-5 py-2 rounded-lg"
+    >
+      Cancel
+    </button>
+
+    <button
+      onclick="login()"
+      class="bg-blue-600 text-white px-5 py-2 rounded-lg"
+    >
+      Login
     </button>
 
   </div>
 
-  <div
-    id="statusResult"
-    class="hidden border border-slate-200 rounded-lg p-6 bg-slate-50"
-  >
-
-    <p class="mb-2">
-      <strong>Job ID:</strong>
-      <span id="resultJobId"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Status:</strong>
-      <span id="resultStatus"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Work Type:</strong>
-      <span id="resultWorkType"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Area:</strong>
-      <span id="resultArea"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Due Date:</strong>
-      <span id="resultDueDate"></span>
-    </p>
+</div>
+```
 
   </div>
 
-</div>
+<script>
 
-  </main>
+// =====================
+// REQUESTER
+// =====================
 
-  <script>
+function goRequester() {
 
-const API_URL =
-'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
-
-// ====================
-// MENU ELEMENTS
-// ====================
-
-const requestSection =
-document.getElementById('requestSection');
-
-const statusSection =
-document.getElementById('statusSection');
-
-const menuRequest =
-document.getElementById('menuRequest');
-
-const menuStatus =
-document.getElementById('menuStatus');
-
-// ====================
-// ACTIVE MENU
-// ====================
-
-function setActiveMenu(activeBtn) {
-
-  document.querySelectorAll('.menu-btn')
-  .forEach(btn => {
-
-    btn.classList.remove('bg-blue-600');
-    btn.classList.add('bg-slate-700');
-
-  });
-
-  activeBtn.classList.remove('bg-slate-700');
-  activeBtn.classList.add('bg-blue-600');
+  window.location.href =
+    'user.html';
 
 }
 
-// ====================
-// REQUEST MENU
-// ====================
+// =====================
+// LOGIN MODAL
+// =====================
 
-menuRequest.addEventListener('click', () => {
+function openLogin() {
 
-  requestSection.classList.remove('hidden');
-
-  statusSection.classList.add('hidden');
-
-  setActiveMenu(menuRequest);
-
-});
-
-// ====================
-// STATUS MENU
-// ====================
-
-menuStatus.addEventListener('click', () => {
-
-  requestSection.classList.add('hidden');
-
-  statusSection.classList.remove('hidden');
-
-  setActiveMenu(menuStatus);
-
-});
-
-// ====================
-// SUBMIT REQUEST
-// ====================
-
-document
-.getElementById('requestForm')
-.addEventListener('submit', async function(e) {
-
-  e.preventDefault();
-
-  const data = {
-
-    requesterName:
-    document.getElementById('requesterName').value,
-
-    department:
-    document.getElementById('department').value,
-
-    phoneNumber:
-    document.getElementById('phoneNumber').value,
-
-    workAction:
-    document.getElementById('workAction').value,
-
-    workType:
-    document.getElementById('workType').value,
-
-    description:
-    document.getElementById('description').value,
-
-    location:
-    document.getElementById('location').value,
-
-    area:
-    document.getElementById('area').value,
-
-    contact:
-    document.getElementById('contact').value,
-
-    dueDate:
-    document.getElementById('dueDate').value,
-
-    remark:
-    document.getElementById('remark').value
-
-  };
-
-  try {
-
-    const response = await fetch(API_URL, {
-
-      method: 'POST',
-
-      body: JSON.stringify(data)
-
-    });
-
-    const result = await response.json();
-
-    if(result.success) {
-
-      alert(
-        `Request Submitted Successfully\n\n` +
-        `Job ID: ${result.jobId}\n\n` +
-        `Please save this Job ID for tracking.`
-      );
-
-      document
-      .getElementById('requestForm')
-      .reset();
-
-    } else {
-
-      alert('Error submitting request');
-
-    }
-
-  } catch(error) {
-
-    console.error(error);
-
-    alert('System Error');
-
-  }
-
-});
-
-// ====================
-// SEARCH JOB
-// ====================
-
-document
-.getElementById('searchBtn')
-.addEventListener('click', async () => {
-
-  const jobId =
-  document.getElementById('searchJobId').value;
-
-  try {
-
-    const response = await fetch(
-      `${API_URL}?action=getJob&jobId=${jobId}`
-    );
-
-    const result = await response.json();
-
-    if(result.error) {
-
-      alert('Job not found');
-
-      return;
-
-    }
-
-    document
-    .getElementById('statusResult')
+  document
+    .getElementById('loginModal')
     .classList.remove('hidden');
 
-    document.getElementById('resultJobId')
-    .innerText = result.jobId;
+}
 
-    document.getElementById('resultStatus')
-    .innerText = result.status;
+function closeLogin() {
 
-    document.getElementById('resultWorkType')
-    .innerText = result.workType;
+  document
+    .getElementById('loginModal')
+    .classList.add('hidden');
 
-    document.getElementById('resultArea')
-    .innerText = result.area;
+}
 
-    document.getElementById('resultDueDate')
-    .innerText = result.dueDate;
+// =====================
+// LOGIN
+// =====================
 
-  } catch(error) {
+function login() {
 
-    console.error(error);
+  const username =
+    document.getElementById('username').value;
 
-    alert('Search Error');
+  const password =
+    document.getElementById('password').value;
+
+  // HARDCODE LOGIN
+
+  const APPROVER_USER = 'manager';
+  const APPROVER_PASSWORD = '1234';
+
+  if(
+    username === APPROVER_USER &&
+    password === APPROVER_PASSWORD
+  ) {
+
+    window.location.href =
+      'approve.html';
+
+  } else {
+
+    alert('Invalid username or password');
 
   }
 
-});
+}
 
 </script>
+
 </body>
 </html>
