@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Approval Panel</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- HEADER -->
+
+  <header class="bg-slate-900 text-white shadow-lg">
+
+
+<div class="max-w-7xl mx-auto px-6 py-4">
+
+  <h1 class="text-2xl font-bold">
+    Scaffold Approval Panel
+  </h1>
+
+  <p class="text-slate-300 text-sm">
+    Pending Request Management
+  </p>
+
+</div>
+
+
+  </header>
+
+  <!-- CONTENT -->
+
+  <main class="max-w-7xl mx-auto p-6">
+
+
+<div class="bg-white rounded-xl shadow-sm p-6">
+
+  <div class="flex justify-between items-center mb-6">
+
+    <h2 class="text-xl font-bold">
+      Pending Requests
+    </h2>
+
+    <button
+      id="refreshBtn"
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg"
+    >
+      Refresh
+    </button>
+
+  </div>
+
+  <!-- TABLE -->
+
+  <div class="overflow-auto">
+
+    <table class="w-full border-collapse">
+
+      <thead>
+
+        <tr class="bg-slate-100">
+
+          <th class="border p-3 text-left">
+            Job ID
+          </th>
+
+          <th class="border p-3 text-left">
+            Description
+          </th>
+
+          <th class="border p-3 text-left">
+            Area
+          </th>
+
+          <th class="border p-3 text-left">
+            Work Type
+          </th>
+
+          <th class="border p-3 text-left">
+            Due Date
+          </th>
+
+          <th class="border p-3 text-left">
+            Action
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="jobTableBody">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+  </main>
+
+<script>
+
+const API_URL =
+'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
+
+// =====================
+// LOAD PENDING JOBS
+// =====================
+
+async function loadPendingJobs() {
+
+  try {
+
+    const response = await fetch(
+      `${API_URL}?action=getPendingJobs`
+    );
+
+    const jobs = await response.json();
+
+    const tbody =
+      document.getElementById('jobTableBody');
+
+    tbody.innerHTML = '';
+
+    jobs.forEach(job => {
+
+      const row = `
+
+        <tr>
+
+          <td class="border p-3">
+            ${job.jobId}
+          </td>
+
+          <td class="border p-3">
+            ${job.description}
+          </td>
+
+          <td class="border p-3">
+            ${job.area}
+          </td>
+
+          <td class="border p-3">
+            ${job.workType}
+          </td>
+
+          <td class="border p-3">
+            ${job.dueDate}
+          </td>
+
+          <td class="border p-3 flex gap-2">
+
+            <button
+              onclick="approveJob('${job.jobId}')"
+              class="bg-green-600 text-white px-4 py-2 rounded"
+            >
+              Approve
+            </button>
+
+            <button
+              onclick="rejectJob('${job.jobId}')"
+              class="bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Reject
+            </button>
+
+          </td>
+
+        </tr>
+
+      `;
+
+      tbody.innerHTML += row;
+
+    });
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert('Load Error');
+
+  }
+
+}
+
+// =====================
+// APPROVE JOB
+// =====================
+
+async function approveJob(jobId) {
+
+  const response = await fetch(API_URL, {
+
+    method: 'POST',
+
+    body: JSON.stringify({
+
+      action: 'approveJob',
+      jobId: jobId
+
+    })
+
+  });
+
+  const result = await response.json();
+
+  if(result.success) {
+
+    alert('Job Approved');
+
+    loadPendingJobs();
+
+  } else {
+
+    alert('Approve Failed');
+
+  }
+
+}
+
+// =====================
+// REJECT JOB
+// =====================
+
+async function rejectJob(jobId) {
+
+  const reason =
+    prompt('Enter reject reason');
+
+  if(reason === null) return;
+
+  const response = await fetch(API_URL, {
+
+    method: 'POST',
+
+    body: JSON.stringify({
+
+      action: 'rejectJob',
+      jobId: jobId,
+      reason: reason
+
+    })
+
+  });
+
+  const result = await response.json();
+
+  if(result.success) {
+
+    alert('Job Rejected');
+
+    loadPendingJobs();
+
+  } else {
+
+    alert('Reject Failed');
+
+  }
+
+}
+
+// =====================
+// REFRESH
+// =====================
+
+document
+.getElementById('refreshBtn')
+.addEventListener('click', loadPendingJobs);
+
+// INITIAL LOAD
+
+loadPendingJobs();
+
+</script>
+
+</body>
+</html>
