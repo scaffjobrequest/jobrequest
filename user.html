@@ -588,7 +588,12 @@ document
     .innerText = result.area;
 
     document.getElementById('resultDueDate')
-    .innerText = result.dueDate;
+    .innerText =
+    dueDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+    });
 
   } catch(error) {
 
