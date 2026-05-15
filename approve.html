@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Approval Panel</title>
+  <title>Scaffold Management System</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -23,11 +23,11 @@
 <div class="max-w-7xl mx-auto px-6 py-4">
 
   <h1 class="text-2xl font-bold">
-    Scaffold Approval Panel
+    Scaffold Management System
   </h1>
 
   <p class="text-slate-300 text-sm">
-    Pending Request Management
+    Request & Approval Portal
   </p>
 
 </div>
@@ -35,71 +35,76 @@
 
   </header>
 
-  <!-- CONTENT -->
+  <!-- MAIN -->
 
-  <main class="max-w-7xl mx-auto p-6">
+  <main class="max-w-5xl mx-auto p-6">
 
 
-<div class="bg-white rounded-xl shadow-sm p-6">
+<!-- HERO -->
 
-  <div class="flex justify-between items-center mb-6">
+<div class="text-center py-12">
 
-    <h2 class="text-xl font-bold">
-      Pending Requests
-    </h2>
+  <h2 class="text-4xl font-bold text-slate-800 mb-4">
+    Select Your Role
+  </h2>
 
-    <button
-      id="refreshBtn"
-      class="bg-blue-600 text-white px-4 py-2 rounded-lg"
-    >
-      Refresh
-    </button>
+  <p class="text-slate-500 text-lg">
+    Scaffold Request Workflow System
+  </p>
+
+</div>
+
+<!-- ROLE CARDS -->
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+  <!-- REQUESTER -->
+
+  <div
+    onclick="goRequester()"
+    class="bg-white rounded-2xl shadow-sm p-10 cursor-pointer hover:shadow-lg transition"
+  >
+
+    <div class="text-center">
+
+      <div class="text-6xl mb-6">
+        📝
+      </div>
+
+      <h3 class="text-2xl font-bold text-slate-800 mb-3">
+        Requester
+      </h3>
+
+      <p class="text-slate-500">
+        Submit scaffold request and check job status
+      </p>
+
+    </div>
 
   </div>
 
-  <!-- TABLE -->
+  <!-- APPROVER -->
 
-  <div class="overflow-auto">
+  <div
+    onclick="openLogin()"
+    class="bg-white rounded-2xl shadow-sm p-10 cursor-pointer hover:shadow-lg transition"
+  >
 
-    <table class="w-full border-collapse">
+    <div class="text-center">
 
-      <thead>
+      <div class="text-6xl mb-6">
+        ✅
+      </div>
 
-        <tr class="bg-slate-100">
+      <h3 class="text-2xl font-bold text-slate-800 mb-3">
+        Approver
+      </h3>
 
-          <th class="border p-3 text-center">
-            Job ID
-          </th>
+      <p class="text-slate-500">
+        Review and approve pending requests
+      </p>
 
-          <th class="border p-3 text-center">
-            Description
-          </th>
-
-          <th class="border p-3 text-center">
-            Area
-          </th>
-
-          <th class="border p-3 text-center">
-            Work Type
-          </th>
-
-          <th class="border p-3 text-center">
-            Due Date
-          </th>
-
-          <th class="border p-3 text-center">
-            Action
-          </th>
-
-        </tr>
-
-      </thead>
-
-      <tbody id="jobTableBody">
-
-      </tbody>
-
-    </table>
+    </div>
 
   </div>
 
@@ -108,179 +113,152 @@
 
   </main>
 
+  <!-- LOGIN MODAL -->
+
+  <div
+    id="loginModal"
+    class="hidden fixed inset-0 bg-black/50 flex items-center justify-center"
+  >
+
+
+<div class="bg-white rounded-2xl p-8 w-full max-w-md">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Approver Login
+  </h2>
+
+  <div class="space-y-4">
+
+    <input
+      type="text"
+      id="username"
+      placeholder="Username"
+      class="w-full border border-slate-300 rounded-lg p-3"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      class="w-full border border-slate-300 rounded-lg p-3"
+    >
+
+  </div>
+
+  <div class="flex justify-end gap-3 mt-6">
+
+    <button
+      onclick="closeLogin()"
+      class="bg-slate-300 px-5 py-2 rounded-lg"
+    >
+      Cancel
+    </button>
+
+    <button
+      onclick="login()"
+      class="bg-blue-600 text-white px-5 py-2 rounded-lg"
+    >
+      Login
+    </button>
+
+  </div>
+
+</div>
+
+
+  </div>
+
 <script>
 
-const API_URL =
-'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
-
 // =====================
-// LOAD PENDING JOBS
+// REQUESTER
 // =====================
 
-async function loadPendingJobs() {
+function goRequester() {
 
-  try {
+  window.location.href =
+    'user.html';
 
-    const response = await fetch(
-      `${API_URL}?action=getPendingJobs`
+}
+
+// =====================
+// LOGIN MODAL
+// =====================
+
+function openLogin() {
+
+  document
+    .getElementById('loginModal')
+    .classList.remove('hidden');
+
+}
+
+function closeLogin() {
+
+  document
+    .getElementById('loginModal')
+    .classList.add('hidden');
+
+}
+
+// =====================
+// LOGIN
+// =====================
+
+function login() {
+
+  const username =
+    document.getElementById('username').value;
+
+  const password =
+    document.getElementById('password').value;
+
+  // APPROVER ACCOUNTS
+
+  const APPROVERS = [
+
+    {
+      username: 'pongsathorn',
+      password: 'faci1347'
+    },
+
+    {
+      username: 'pattana',
+      password: 'faci4250'
+    },
+
+    {
+      username: 'natthawan',
+      password: 'faci7158'
+    }
+
+  ];
+
+  // CHECK LOGIN
+
+  const validUser = APPROVERS.find(user => {
+
+    return (
+      user.username === username &&
+      user.password === password
     );
 
-    const jobs = await response.json();
-
-    const tbody =
-      document.getElementById('jobTableBody');
-
-    tbody.innerHTML = '';
-
-    jobs.forEach(job => {
-
-      const row = `
-
-        <tr>
-
-          <td class="border p-3 text-center">
-            ${job.jobId}
-          </td>
-
-          <td class="border p-3 text-left">
-            ${job.description}
-          </td>
-
-          <td class="border p-3 text-center">
-            ${job.area}
-          </td>
-
-          <td class="border p-3 text-center">
-            ${job.workType}
-          </td>
-
-          <td class="border p-3 text-center">
-            ${job.dueDate}
-          </td>
-
-          <td class="border p-3 flex gap-2">
-
-            <button
-              onclick="approveJob('${job.jobId}')"
-              class="bg-green-600 text-white px-4 py-2 rounded"
-            >
-              Approve
-            </button>
-
-            <button
-              onclick="rejectJob('${job.jobId}')"
-              class="bg-red-600 text-white px-4 py-2 rounded"
-            >
-              Reject
-            </button>
-
-          </td>
-
-        </tr>
-
-      `;
-
-      tbody.innerHTML += row;
-
-    });
-
-  } catch(error) {
-
-    console.error(error);
-
-    alert('Load Error');
-
-  }
-
-}
-
-// =====================
-// APPROVE JOB
-// =====================
-
-async function approveJob(jobId) {
-
-  const response = await fetch(API_URL, {
-
-    method: 'POST',
-
-    body: JSON.stringify({
-
-      action: 'approveJob',
-      jobId: jobId
-
-    })
-
   });
 
-  const result = await response.json();
+  // SUCCESS
 
-  if(result.success) {
+  if(validUser) {
 
-    alert('Job Approved');
-
-    loadPendingJobs();
+    window.location.href =
+      'approve.html';
 
   } else {
 
-    alert('Approve Failed');
+    alert('Invalid username or password');
 
   }
 
 }
-
-// =====================
-// REJECT JOB
-// =====================
-
-async function rejectJob(jobId) {
-
-  const reason =
-    prompt('Enter reject reason');
-
-  if(reason === null) return;
-
-  const response = await fetch(API_URL, {
-
-    method: 'POST',
-
-    body: JSON.stringify({
-
-      action: 'rejectJob',
-      jobId: jobId,
-      reason: reason
-
-    })
-
-  });
-
-  const result = await response.json();
-
-  if(result.success) {
-
-    alert('Job Rejected');
-
-    loadPendingJobs();
-
-  } else {
-
-    alert('Reject Failed');
-
-  }
-
-}
-
-// =====================
-// REFRESH
-// =====================
-
-document
-.getElementById('refreshBtn')
-.addEventListener('click', loadPendingJobs);
-
-// INITIAL LOAD
-
-loadPendingJobs();
 
 </script>
 
