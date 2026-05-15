@@ -388,7 +388,6 @@ Check Status
   </div>
 
 </div>
-```
 
   </main>
 
@@ -397,35 +396,63 @@ Check Status
     const API_URL =
       'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
 
-    // MENU
+    // MENU SWITCH
 
-    document
-      .getElementById('menuRequest')
-      .addEventListener('click', () => {
+const requestSection =
+document.getElementById('requestSection');
 
-        document
-          .getElementById('requestSection')
-          .classList.remove('hidden');
+const statusSection =
+document.getElementById('statusSection');
 
-        document
-          .getElementById('statusSection')
-          .classList.add('hidden');
+const menuRequest =
+document.getElementById('menuRequest');
 
-      });
+const menuStatus =
+document.getElementById('menuStatus');
 
-    document
-      .getElementById('menuStatus')
-      .addEventListener('click', () => {
+function setActiveMenu(activeBtn) {
 
-        document
-          .getElementById('requestSection')
-          .classList.add('hidden');
+// RESET ALL
 
-        document
-          .getElementById('statusSection')
-          .classList.remove('hidden');
+document.querySelectorAll('.menu-btn')
+.forEach(btn => {
 
-      });
+
+  btn.classList.remove('bg-blue-600');
+  btn.classList.add('bg-slate-700');
+
+});
+
+
+// ACTIVE BUTTON
+
+activeBtn.classList.remove('bg-slate-700');
+activeBtn.classList.add('bg-blue-600');
+}
+
+// REQUEST MENU
+
+menuRequest.addEventListener('click', () => {
+
+requestSection.classList.remove('hidden');
+
+statusSection.classList.add('hidden');
+
+setActiveMenu(menuRequest);
+
+});
+
+// STATUS MENU
+
+menuStatus.addEventListener('click', () => {
+
+requestSection.classList.add('hidden');
+
+statusSection.classList.remove('hidden');
+
+setActiveMenu(menuStatus);
+
+});
 
     // SUBMIT REQUEST
 
