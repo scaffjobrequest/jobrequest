@@ -160,20 +160,49 @@
 
     <!-- DESCRIPTION -->
 
-    <div>
+    <!-- DESCRIPTION -->
 
-      <label class="block text-sm font-semibold mb-2">
-        Description
-      </label>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-      <input
-        type="text"
-        id="description"
-        required
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
+  <!-- DESCRIPTION -->
 
-    </div>
+  <div>
+
+    <label class="block text-sm font-semibold mb-2">
+      Description
+    </label>
+
+    <textarea
+      id="description"
+      rows="4"
+      required
+      placeholder="Enter work description, location, scaffold size and additional details"
+      class="w-full border border-slate-300 rounded-lg p-3"
+    ></textarea>
+
+  </div>
+
+  <!-- QUANTITY -->
+
+  <div>
+
+    <label class="block text-sm font-semibold mb-2">
+      Quantity (m³)
+    </label>
+
+    <input
+      type="number"
+      id="quantity"
+      min="0"
+      step="0.01"
+      placeholder="Example: 25"
+      required
+      class="w-full border border-slate-300 rounded-lg p-3"
+    >
+
+  </div>
+
+</div>
 
     <!-- LOCATION -->
 
@@ -475,6 +504,9 @@ submitButton.innerText = 'Submitting...';
 
     description:
     document.getElementById('description').value,
+
+    quantity:
+    document.getElementById('quantity').value,
 
     location:
     document.getElementById('location').value,
