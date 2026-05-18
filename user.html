@@ -335,86 +335,7 @@
     class="hidden border border-slate-200 rounded-lg p-6 bg-slate-50"
   >
 
-    <p class="mb-2">
-      <strong>Job ID:</strong>
-      <span id="resultJobId"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Status:</strong>
-      <span id="resultStatus"></span>
-    </p>
-    
-    <p class="mb-2">
-      <strong>Rejected Reason:</strong>
-      <span id="resultRejectedReason"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Work Type:</strong>
-      <span id="resultWorkType"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Area:</strong>
-      <span id="resultArea"></span>
-    </p>
-
-    <p class="mb-2">
-      <strong>Due Date:</strong>
-      <span id="resultDueDate"></span>
-    </p>
-<!-- WORK ORDER INPUT -->
-
-<div
-  id="workOrderSection"
-  class="hidden mt-4"
->
-
-  <label class="block font-bold mb-2">
-    Work Order
-  </label>
-
-  <div class="flex gap-2">
-
-    <input
-      type="text"
-      id="workOrderInput"
-      placeholder="Enter Work Order"
-      class="border border-slate-300 rounded-lg p-2 flex-1"
-    >
-
-    <button
-      id="saveWOButton"
-      onclick="saveWorkOrder()"
-      class="bg-blue-600 text-white px-4 py-2 rounded-lg"
-    >
-      Save WO
-    </button>
-
-  </div>
-
-</div>
-
-<!-- WORK ORDER DISPLAY -->
-
-<div
-  id="workOrderDisplay"
-  class="hidden mt-4"
->
-
-  <p>
-
-    <strong>Work Order:</strong>
-
-    <span id="resultWorkOrder"></span>
-
-  </p>
-
-</div>
-  </div>
-
-</div>
+    <div id="resultContainer"></div>
 <!-- LOADING OVERLAY -->
 
 <div
@@ -574,7 +495,7 @@ document
 
     });
 
-    const result = await response.json();
+    const results = await response.json();
 
     if(result.success) {
 
@@ -608,31 +529,51 @@ document
 // SEARCH JOB
 // ====================
 
+// ====================
+// SEARCH JOB
+// ====================
+
 document
 .getElementById('searchBtn')
 .addEventListener('click', async () => {
 
-  const jobId =
+  const searchText =
   document.getElementById('searchJobId').value;
-showLoading();
 
-const searchButton =
-document.getElementById('searchBtn');
+  if(!searchText) {
 
-searchButton.disabled = true;
+    alert('Please enter Job ID or WO');
 
-searchButton.innerText = 'Searching...';
+    return;
+
+  }
+
+  showLoading();
+
+  const searchButton =
+  document.getElementById('searchBtn');
+
+  searchButton.disabled = true;
+
+  searchButton.innerText = 'Searching...';
+
   try {
 
     const response = await fetch(
-      `${API_URL}?action=getJob&jobId=${jobId}`
+      `${API_URL}?action=getJob&jobId=${encodeURIComponent(searchText)}`
     );
 
-    const result = await response.json();
+    const results = await response.json();
 
-    if(result.error) {
+    if(results.error) {
 
       alert('Job not found');
+
+      hideLoading();
+
+      searchButton.disabled = false;
+
+      searchButton.innerText = 'Search';
 
       return;
 
@@ -642,125 +583,152 @@ searchButton.innerText = 'Searching...';
     .getElementById('statusResult')
     .classList.remove('hidden');
 
-    // JOB ID
+    const resultContainer =
+    document.getElementById('resultContainer');
 
-    document.getElementById('resultJobId')
-    .innerText = result.jobId;
-    currentJobId = result.jobId;
-    // STATUS
+    resultContainer.innerHTML = '';
 
-    document.getElementById('resultStatus')
-    .innerText = result.status;
+    results.forEach(result => {
 
-    // REJECTED REASON
+      currentJobId = result.jobId;
 
-    const rejectedReasonElement =
-    document.getElementById('resultRejectedReason');
+      const dueDate =
+      new Date(result.dueDate);
 
-    const rejectedReasonRow =
-    rejectedReasonElement.parentElement;
+      const formattedDate =
+      dueDate.toLocaleDateString(
+        'en-GB',
+        {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }
+      );
 
-    if(result.status === 'Rejected') {
+      let rejectedHTML = '';
 
-      rejectedReasonRow.classList.remove('hidden');
+      if(
+        result.status === 'Rejected' &&
+        result.rejectedReason
+      ) {
 
-      rejectedReasonElement.innerText =
-      result.rejectedReason || '-';
+        rejectedHTML = `
+          <p class="mt-2">
+            <strong>Rejected Reason:</strong>
+            ${result.rejectedReason}
+          </p>
+        `;
 
-    } else {
+      }
 
-      rejectedReasonRow.classList.add('hidden');
+      let woHTML = '';
 
-    }
+      if(result.workOrder) {
 
-    // WORK TYPE
+        woHTML = `
+          <p class="mt-2">
+            <strong>Work Order:</strong>
+            ${result.workOrder}
+          </p>
+        `;
 
-    document.getElementById('resultWorkType')
-    .innerText = result.workType;
+      }
 
-    // AREA
+      let woInputHTML = '';
 
-    document.getElementById('resultArea')
-    .innerText = result.area;
+      if(
+        result.status === 'Approved' &&
+        !result.workOrder
+      ) {
 
-    // DUE DATE
+        woInputHTML = `
 
-    const dueDate =
-    new Date(result.dueDate);
+          <div class="mt-4">
 
-    document.getElementById('resultDueDate')
-    .innerText =
-    dueDate.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
+            <label class="block font-bold mb-2">
+              Work Order
+            </label>
+
+            <div class="flex gap-2">
+
+              <input
+                type="text"
+                id="workOrderInput"
+                placeholder="Enter Work Order"
+                class="border border-slate-300 rounded-lg p-2 flex-1"
+              >
+
+              <button
+                onclick="saveWorkOrder('${result.jobId}')"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg"
+              >
+                Save WO
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+
+      const card = `
+
+        <div class="bg-slate-100 rounded-xl p-6 mb-4">
+
+          <p>
+            <strong>Job ID:</strong>
+            ${result.jobId}
+          </p>
+
+          <p class="mt-2">
+            <strong>Status:</strong>
+            ${result.status}
+          </p>
+
+          <p class="mt-2">
+            <strong>Work Type:</strong>
+            ${result.workType}
+          </p>
+
+          <p class="mt-2">
+            <strong>Area:</strong>
+            ${result.area}
+          </p>
+
+          <p class="mt-2">
+            <strong>Due Date:</strong>
+            ${formattedDate}
+          </p>
+
+          ${rejectedHTML}
+
+          ${woHTML}
+
+          ${woInputHTML}
+
+        </div>
+
+      `;
+
+      resultContainer.innerHTML += card;
+
     });
-// =====================
-// WORK ORDER LOGIC
-// =====================
 
-const woSection =
-document.getElementById('workOrderSection');
-
-const woDisplay =
-document.getElementById('workOrderDisplay');
-
-const hasWO =
-result.workOrder &&
-String(result.workOrder).trim() !== '';
-
-if(
-  result.status === 'Approved' &&
-  !hasWO
-) {
-
-  // SHOW INPUT
-
-  woSection.classList.remove('hidden');
-
-  woDisplay.classList.add('hidden');
-
-}
-else if(
-  result.status === 'Approved' &&
-  hasWO
-) {
-
-  // SHOW WO
-
-  woSection.classList.add('hidden');
-
-  woDisplay.classList.remove('hidden');
-
-  document.getElementById('resultWorkOrder')
-.innerText = String(result.workOrder);
-
-}
-else {
-
-  // HIDE ALL
-
-  woSection.classList.add('hidden');
-
-  woDisplay.classList.add('hidden');
-
-}
-    hideLoading();
-
-searchButton.disabled = false;
-
-searchButton.innerText = 'Search';
   } catch(error) {
 
     console.error(error);
 
     alert('Search Error');
-hideLoading();
 
-searchButton.disabled = false;
-
-searchButton.innerText = 'Search';
   }
+
+  hideLoading();
+
+  searchButton.disabled = false;
+
+  searchButton.innerText = 'Search';
 
 });
 async function saveWorkOrder() {
