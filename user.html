@@ -379,7 +379,54 @@
       <strong>Due Date:</strong>
       <span id="resultDueDate"></span>
     </p>
+<!-- WORK ORDER INPUT -->
 
+<div
+  id="workOrderSection"
+  class="hidden mt-4"
+>
+
+  <label class="block font-bold mb-2">
+    Work Order
+  </label>
+
+  <div class="flex gap-2">
+
+    <input
+      type="text"
+      id="workOrderInput"
+      placeholder="Enter Work Order"
+      class="border border-slate-300 rounded-lg p-2 flex-1"
+    >
+
+    <button
+      id="saveWOButton"
+      onclick="saveWorkOrder()"
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg"
+    >
+      Save WO
+    </button>
+
+  </div>
+
+</div>
+
+<!-- WORK ORDER DISPLAY -->
+
+<div
+  id="workOrderDisplay"
+  class="hidden mt-4"
+>
+
+  <p>
+
+    <strong>Work Order:</strong>
+
+    <span id="resultWorkOrder"></span>
+
+  </p>
+
+</div>
   </div>
 
 </div>
@@ -390,7 +437,7 @@
 
 const API_URL =
 'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
-
+let currentJobId = '';
 // ====================
 // MENU ELEMENTS
 // ====================
@@ -576,7 +623,7 @@ document
 
     document.getElementById('resultJobId')
     .innerText = result.jobId;
-
+    currentJobId = result.jobId;
     // STATUS
 
     document.getElementById('resultStatus')
@@ -625,7 +672,56 @@ document
       month: 'short',
       year: 'numeric'
     });
+// =====================
+// WORK ORDER LOGIC
+// =====================
 
+const woSection =
+document.getElementById('workOrderSection');
+
+const woDisplay =
+document.getElementById('workOrderDisplay');
+
+const hasWO =
+result.workOrder &&
+result.workOrder.trim() !== '';
+
+if(
+  result.status === 'Approved' &&
+  !hasWO
+) {
+
+  // SHOW INPUT
+
+  woSection.classList.remove('hidden');
+
+  woDisplay.classList.add('hidden');
+
+}
+else if(
+  result.status === 'Approved' &&
+  hasWO
+) {
+
+  // SHOW WO
+
+  woSection.classList.add('hidden');
+
+  woDisplay.classList.remove('hidden');
+
+  document.getElementById('resultWorkOrder')
+  .innerText = result.workOrder;
+
+}
+else {
+
+  // HIDE ALL
+
+  woSection.classList.add('hidden');
+
+  woDisplay.classList.add('hidden');
+
+}
   } catch(error) {
 
     console.error(error);
@@ -635,7 +731,61 @@ document
   }
 
 });
+async function saveWorkOrder() {
 
+  const workOrder =
+  document.getElementById('workOrderInput').value;
+
+  if(!workOrder) {
+
+    alert('Please enter Work Order');
+
+    return;
+
+  }
+
+  const saveButton =
+  document.getElementById('saveWOButton');
+
+  saveButton.disabled = true;
+
+  saveButton.innerText = 'Saving...';
+
+  try {
+
+    const response = await fetch(
+
+      `${API_URL}?action=updateWO&jobId=${currentJobId}&workOrder=${encodeURIComponent(workOrder)}`
+
+    );
+
+    const result = await response.json();
+
+    if(result.success) {
+
+      alert('Work Order Saved');
+
+      document.getElementById('searchBtn').click();
+
+    } else {
+
+      alert('Save Failed');
+
+    }
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert('Save Error');
+
+  }
+
+  saveButton.disabled = false;
+
+  saveButton.innerText = 'Save WO';
+
+}
 </script>
 </body>
 </html>
