@@ -450,6 +450,14 @@ document
 .addEventListener('submit', async function(e) {
 
   e.preventDefault();
+  showLoading();
+
+const submitButton =
+e.target.querySelector('button[type="submit"]');
+
+submitButton.disabled = true;
+
+submitButton.innerText = 'Submitting...';
 
   const data = {
 
@@ -520,7 +528,11 @@ document
     console.error(error);
 
     alert('System Error');
+hideLoading();
 
+submitButton.disabled = false;
+
+submitButton.innerText = 'Submit Request';
   }
 
 });
