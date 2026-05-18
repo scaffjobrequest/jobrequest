@@ -373,91 +373,34 @@
 
     </div>
 
-    <!-- MATERIALS -->
+    <!-- MATERIAL ITEMS -->
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
 
-      <div>
+  <div class="flex justify-between items-center mb-4">
 
-        <label class="block text-sm font-semibold mb-2">
-          Pipe
-        </label>
+    <label class="block text-sm font-semibold">
+      Material Items
+    </label>
 
-        <input
-          type="number"
-          id="pipe"
-          min="0"
-          value="0"
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
+    <button
+      type="button"
+      id="addMaterialRow"
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm"
+    >
+      + Add Item
+    </button>
 
-      </div>
+  </div>
 
-      <div>
+  <div
+    id="materialItems"
+    class="space-y-4"
+  >
 
-        <label class="block text-sm font-semibold mb-2">
-          Board
-        </label>
+  </div>
 
-        <input
-          type="number"
-          id="board"
-          min="0"
-          value="0"
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Clamp Fixed
-        </label>
-
-        <input
-          type="number"
-          id="clampFixed"
-          min="0"
-          value="0"
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Clamp Swivel
-        </label>
-
-        <input
-          type="number"
-          id="clampSwivel"
-          min="0"
-          value="0"
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Ladder
-        </label>
-
-        <input
-          type="number"
-          id="ladder"
-          min="0"
-          value="0"
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-      </div>
-
-    </div>
+</div>
 
     <!-- BUTTON -->
 
@@ -732,7 +675,88 @@ submitButton.innerText = 'Submit Request';
   }
 
 });
+// ====================
+// ADD MATERIAL ROW
+// ====================
 
+function addMaterialRow() {
+
+  const container =
+  document.getElementById('materialItems');
+
+  const row = document.createElement('div');
+
+  row.className =
+    'grid grid-cols-1 md:grid-cols-4 gap-4';
+
+  row.innerHTML = `
+
+    <select
+      class="materialType border border-slate-300 rounded-lg p-3"
+      required
+    >
+
+      <option value="">
+        Material
+      </option>
+
+      <option value="Pipe">
+        Pipe
+      </option>
+
+      <option value="Board">
+        Board
+      </option>
+
+      <option value="Clamp Fixed">
+        Clamp Fixed
+      </option>
+
+      <option value="Clamp Swivel">
+        Clamp Swivel
+      </option>
+
+      <option value="Ladder">
+        Ladder
+      </option>
+
+    </select>
+
+    <input
+      type="text"
+      class="materialSize border border-slate-300 rounded-lg p-3"
+      placeholder="Size"
+      required
+    >
+
+    <input
+      type="number"
+      class="materialQty border border-slate-300 rounded-lg p-3"
+      placeholder="Quantity"
+      min="1"
+      required
+    >
+
+    <button
+      type="button"
+      class="bg-red-600 text-white rounded-lg"
+      onclick="this.parentElement.remove()"
+    >
+      Remove
+    </button>
+
+  `;
+
+  container.appendChild(row);
+
+}
+    document
+.getElementById('addMaterialRow')
+.addEventListener('click', addMaterialRow);
+
+// DEFAULT ROW
+
+addMaterialRow();
 // ====================
 // SUBMIT MATERIAL LOG
 // ====================
