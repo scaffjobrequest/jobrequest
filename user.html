@@ -684,7 +684,7 @@ document.getElementById('workOrderDisplay');
 
 const hasWO =
 result.workOrder &&
-result.workOrder.trim() !== '';
+String(result.workOrder).trim() !== '';
 
 if(
   result.status === 'Approved' &&
@@ -710,7 +710,7 @@ else if(
   woDisplay.classList.remove('hidden');
 
   document.getElementById('resultWorkOrder')
-  .innerText = result.workOrder;
+.innerText = String(result.workOrder);
 
 }
 else {
@@ -763,11 +763,24 @@ async function saveWorkOrder() {
 
     if(result.success) {
 
-      alert('Work Order Saved');
+  alert('Work Order Saved');
 
-      document.getElementById('searchBtn').click();
+  const response = await fetch(
+    `${API_URL}?action=getJob&jobId=${currentJobId}`
+  );
 
-    } else {
+  const updatedResult = await response.json();
+
+  document.getElementById('workOrderSection')
+  .classList.add('hidden');
+
+  document.getElementById('workOrderDisplay')
+  .classList.remove('hidden');
+
+  document.getElementById('resultWorkOrder')
+  .innerText = updatedResult.workOrder;
+
+} else {
 
       alert('Save Failed');
 
