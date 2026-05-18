@@ -572,27 +572,58 @@ document
     .getElementById('statusResult')
     .classList.remove('hidden');
 
+    // JOB ID
+
     document.getElementById('resultJobId')
     .innerText = result.jobId;
 
+    // STATUS
+
     document.getElementById('resultStatus')
     .innerText = result.status;
-    
-    document.getElementById('resultRejectedReason')
-    .innerText = result.rejectedReason || '-';
+
+    // REJECTED REASON
+
+    const rejectedReasonElement =
+    document.getElementById('resultRejectedReason');
+
+    const rejectedReasonRow =
+    rejectedReasonElement.parentElement;
+
+    if(result.status === 'Rejected') {
+
+      rejectedReasonRow.classList.remove('hidden');
+
+      rejectedReasonElement.innerText =
+      result.rejectedReason || '-';
+
+    } else {
+
+      rejectedReasonRow.classList.add('hidden');
+
+    }
+
+    // WORK TYPE
 
     document.getElementById('resultWorkType')
     .innerText = result.workType;
 
+    // AREA
+
     document.getElementById('resultArea')
     .innerText = result.area;
+
+    // DUE DATE
+
+    const dueDate =
+    new Date(result.dueDate);
 
     document.getElementById('resultDueDate')
     .innerText =
     dueDate.toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric'
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
     });
 
   } catch(error) {
