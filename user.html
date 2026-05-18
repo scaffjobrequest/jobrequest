@@ -503,25 +503,27 @@ submitButton.innerText = 'Submitting...';
 
     });
 
-    const results = await response.json();
+    const result = await response.json();
 
     if(result.success) {
 
       alert(
-        `Request Submitted Successfully\n\n` +
-        `Job ID: ${result.jobId}\n\n` +
-        `Please save this Job ID for tracking.`
-      );
+  `Request Submitted Successfully\n\n` +
+  `Job ID: ${result.jobId}`
+);
 
-      document
-      .getElementById('requestForm')
-      .reset();
+location.reload();
 
     } else {
 
       alert('Error submitting request');
 
     }
+    hideLoading();
+
+submitButton.disabled = false;
+
+submitButton.innerText = 'Submit Request';
 
   } catch(error) {
 
