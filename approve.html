@@ -193,9 +193,7 @@ async function loadPendingJobs() {
             ${job.description}
           </td>
 
-          <td class="border p-3 text-center">
-            ${job.area}
-          </td>
+          
 <td>
 
   ${
@@ -217,6 +215,10 @@ async function loadPendingJobs() {
 
 </td>
           <td class="border p-3 text-center">
+            ${job.area}
+          </td>
+          
+          <td class="border p-3 text-center">
             ${job.workType}
           </td>
 
@@ -225,7 +227,7 @@ async function loadPendingJobs() {
           </td>
 
           <td class="border p-3 text-center">
-            ${job.dueDate}
+            ${formatDate(job.dueDate)}
           </td>
 
           <td class="border p-3">
@@ -271,7 +273,21 @@ async function loadPendingJobs() {
 }
 
 }
+function formatDate(dateString) {
 
+  if(!dateString) return '-';
+
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString('en-GB', {
+
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+
+  });
+
+}
 // =====================
 // APPROVE JOB
 // =====================
@@ -291,21 +307,7 @@ async function approveJob(jobId) {
     if(result.success) {
 
       alert('Job Approved');
-function formatDate(dateString) {
 
-  if(!dateString) return '-';
-
-  const date = new Date(dateString);
-
-  return date.toLocaleDateString('en-GB', {
-
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric'
-
-  });
-
-}
       loadPendingJobs();
 
     } else {
