@@ -462,7 +462,10 @@
     class="hidden border border-slate-200 rounded-lg p-6 bg-slate-50"
   >
 
-    <div id="resultContainer"></div>
+   <div id="resultContainer"></div>
+
+</div>
+
 <!-- LOADING OVERLAY -->
 
 <div
@@ -483,7 +486,8 @@
   </div>
 
 </div>
-  </main>
+
+</main>
 
   <script>
 
@@ -1132,7 +1136,7 @@ document
 async function saveWorkOrder() {
 
   const workOrder =
-  document.getElementById('workOrderInput').value;
+    document.getElementById('workOrderInput').value;
 
   if(!workOrder) {
 
@@ -1143,10 +1147,12 @@ async function saveWorkOrder() {
   }
 
   const saveButton =
-  document.getElementById('saveWOButton');
+    document.getElementById('saveWOButton');
 
   saveButton.disabled = true;
+
   showLoading();
+
   saveButton.innerText = 'Saving...';
 
   try {
@@ -1161,17 +1167,15 @@ async function saveWorkOrder() {
 
     if(result.success) {
 
-  alert('Work Order Saved');
+      hideLoading();
 
-  location.reload();
+      alert('Work Order Saved');
 
-} else {
+      location.reload();
 
-  alert('Save Failed');
+    } else {
 
-}
-
-} else {
+      hideLoading();
 
       alert('Save Failed');
 
@@ -1181,12 +1185,14 @@ async function saveWorkOrder() {
 
     console.error(error);
 
+    hideLoading();
+
     alert('Save Error');
 
   }
 
   saveButton.disabled = false;
-  hideLoading();
+
   saveButton.innerText = 'Save WO';
 
 }
