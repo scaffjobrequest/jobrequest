@@ -90,6 +90,10 @@
           </th>
 
           <th class="border p-3 text-center">
+            Images
+          </th>
+
+          <th class="border p-3 text-center">
             Area
           </th>
 
@@ -192,7 +196,26 @@ async function loadPendingJobs() {
           <td class="border p-3 text-center">
             ${job.area}
           </td>
+<td>
 
+  ${
+    job.images.length > 0
+
+    ?
+
+    `<button
+        onclick='showImages(${JSON.stringify(job.images)})'
+        class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm"
+      >
+        View Images
+      </button>`
+
+    :
+
+    '-'
+  }
+
+</td>
           <td class="border p-3 text-center">
             ${job.workType}
           </td>
@@ -370,7 +393,66 @@ document
 // INITIAL LOAD
 
 loadPendingJobs();
+function showImages(images) {
 
+  const imageHTML = images.map(img => `
+
+    <img
+      src="${img}"
+      class="w-full rounded-xl border"
+    >
+
+  `).join('');
+
+  document.body.insertAdjacentHTML(
+
+    'beforeend',
+
+    `
+
+    <div
+      id="imagePopup"
+      class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-6"
+    >
+
+      <div class="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-auto">
+
+        <div class="flex justify-between items-center mb-4">
+
+          <h2 class="text-2xl font-bold">
+            Job Images
+          </h2>
+
+          <button
+            onclick="closeImagePopup()"
+            class="bg-red-500 text-white px-4 py-2 rounded-lg"
+          >
+            Close
+          </button>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          ${imageHTML}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    `
+  );
+
+}
+
+function closeImagePopup() {
+
+  document.getElementById('imagePopup')
+  ?.remove();
+
+}
 </script>
 
 </body>
