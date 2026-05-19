@@ -1286,6 +1286,13 @@ function closeSuccessPopup() {
     `).join('');
 
 }
+    function removeFile(index) {
+
+  selectedFiles.splice(index, 1);
+
+  renderSelectedFiles();
+
+}
 </script>
 </body>
 </html>
