@@ -795,29 +795,38 @@ document
   submitButton.innerText =
     'Saving...';
 
-  const data = {
+  const rows =
+document.querySelectorAll('#materialItems > div');
 
-    type: 'material',
+const items = [];
 
-    contractor:
+rows.forEach(row => {
+
+  items.push({
+
+    materialType:
+      row.querySelector('.materialType').value,
+
+    size:
+      row.querySelector('.materialSize').value,
+
+    quantity:
+      row.querySelector('.materialQty').value
+
+  });
+
+});
+
+const data = {
+
+  type: 'material',
+
+  contractor:
     document.getElementById('contractor').value,
 
-    pipe:
-    document.getElementById('pipe').value,
+  items: items
 
-    board:
-    document.getElementById('board').value,
-
-    clampFixed:
-    document.getElementById('clampFixed').value,
-
-    clampSwivel:
-    document.getElementById('clampSwivel').value,
-
-    ladder:
-    document.getElementById('ladder').value
-
-  };
+};
 
   try {
 
