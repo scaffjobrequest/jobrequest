@@ -312,12 +312,20 @@
       </label>
 
       <input
-        type="file"
-        id="photos"
-        multiple
-        accept="image/*"
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
+  type="file"
+  id="photos"
+  multiple
+  accept="image/*"
+  onchange="addMoreFiles(event)"
+  class="w-full border border-slate-300 rounded-lg p-3"
+>
+
+<div
+  id="selectedFilesText"
+  class="text-sm text-slate-500 mt-2"
+>
+  No images selected
+</div>
 
     </div>
 
@@ -494,6 +502,7 @@
 const API_URL =
 'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
 let currentJobId = '';
+    let selectedFiles = [];
     function showLoading() {
 
   document
@@ -615,6 +624,7 @@ submitButton.disabled = true;
 
 submitButton.innerText = 'Submitting...';
 
+  const files = selectedFiles;
   const data = {
 
     requesterName:
@@ -1216,6 +1226,26 @@ async function saveWorkOrder() {
 function closeSuccessPopup() {
 
   location.reload();
+
+}
+    function addMoreFiles(event) {
+
+  const newFiles =
+    Array.from(event.target.files);
+
+  selectedFiles = [
+
+    ...selectedFiles,
+
+    ...newFiles
+
+  ];
+
+  document.getElementById(
+    'selectedFilesText'
+  ).innerText =
+
+    `${selectedFiles.length} image(s) selected`;
 
 }
 </script>
