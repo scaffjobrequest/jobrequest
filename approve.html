@@ -241,11 +241,11 @@ async function loadPendingJobs() {
 
   } catch(error) {
 
-    console.error(error);
+  console.error(error);
 
-    alert('Load Error');
+  alert(error.message);
 
-  }
+}
 
 }
 
@@ -350,7 +350,22 @@ async function rejectJob(jobId) {
 
 document
 .getElementById('refreshBtn')
-.addEventListener('click', loadPendingJobs);
+.addEventListener('click', async () => {
+
+  const btn =
+    document.getElementById('refreshBtn');
+
+  btn.disabled = true;
+
+  btn.innerText = 'Refreshing...';
+
+  await loadPendingJobs();
+
+  btn.disabled = false;
+
+  btn.innerText = 'Refresh';
+
+});
 
 // INITIAL LOAD
 
