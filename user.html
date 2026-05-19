@@ -1241,11 +1241,49 @@ function closeSuccessPopup() {
 
   ];
 
-  document.getElementById(
-    'selectedFilesText'
-  ).innerText =
+  renderSelectedFiles();
 
-    `${selectedFiles.length} image(s) selected`;
+}
+    function renderSelectedFiles() {
+
+  const container =
+    document.getElementById(
+      'selectedFilesText'
+    );
+
+  if(selectedFiles.length === 0) {
+
+    container.innerHTML =
+      'No images selected';
+
+    return;
+
+  }
+
+  container.innerHTML =
+    selectedFiles.map((file, index) => `
+
+      <div
+        class="flex items-center justify-between bg-slate-100 rounded-lg px-3 py-2 mt-2"
+      >
+
+        <span class="text-sm truncate">
+
+          📷 ${file.name}
+
+        </span>
+
+        <button
+          type="button"
+          onclick="removeFile(${index})"
+          class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm"
+        >
+          Remove
+        </button>
+
+      </div>
+
+    `).join('');
 
 }
 </script>
