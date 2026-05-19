@@ -657,23 +657,75 @@ submitButton.innerText = 'Submitting...';
       body: JSON.stringify(data)
 
     });
-
     const result = await response.json();
 
     if(result.success) {
 
-      alert(
-  `Request Submitted Successfully\n\n` +
-  `Job ID: ${result.jobId}`
-);
+  hideLoading();
 
-location.reload();
+  submitButton.disabled = false;
 
-    } else {
+  submitButton.innerText =
+    'Submit Request';
 
-      alert('Error submitting request');
+  document.body.insertAdjacentHTML(
 
-    }
+    'beforeend',
+
+    `
+
+    <div
+      id="successPopup"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    >
+
+      <div class="bg-white rounded-2xl p-8 w-full max-w-md text-center">
+
+        <h2 class="text-2xl font-bold mb-4 text-green-600">
+          Request Submitted
+        </h2>
+
+        <p class="text-slate-500 mb-4">
+          Your Job ID
+        </p>
+
+        <div
+          class="bg-slate-100 rounded-xl p-4 text-2xl font-bold mb-6"
+          id="jobIdText"
+        >
+          ${result.jobId}
+        </div>
+
+        <div class="flex gap-3">
+
+          <button
+            onclick="copyJobId()"
+            class="flex-1 bg-blue-600 text-white py-3 rounded-xl"
+          >
+            Copy Job ID
+          </button>
+
+          <button
+            onclick="closeSuccessPopup()"
+            class="flex-1 bg-slate-300 py-3 rounded-xl"
+          >
+            Close
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    `
+  );
+
+} else {
+
+  alert('Error submitting request');
+
+}
     hideLoading();
 
 submitButton.disabled = false;
@@ -1142,6 +1194,23 @@ async function saveWorkOrder() {
   saveButton.disabled = false;
   hideLoading();
   saveButton.innerText = 'Save WO';
+
+}
+    function copyJobId() {
+
+  const text =
+    document.getElementById('jobIdText')
+    .innerText;
+
+  navigator.clipboard.writeText(text);
+
+  alert('Copied');
+
+}
+
+function closeSuccessPopup() {
+
+  location.reload();
 
 }
 </script>
