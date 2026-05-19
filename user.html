@@ -664,13 +664,31 @@ submitButton.innerText = 'Submitting...';
 
   try {
 
-    const response = await fetch(API_URL, {
+    const formData = new FormData();
 
-      method: 'POST',
+formData.append(
+  'data',
+  JSON.stringify(data)
+);
 
-      body: JSON.stringify(data)
+// ADD PHOTOS
 
-    });
+selectedFiles.forEach(file => {
+
+  formData.append(
+    'photos',
+    file
+  );
+
+});
+
+const response = await fetch(API_URL, {
+
+  method: 'POST',
+
+  body: formData
+
+});
     const result = await response.json();
 
     if(result.success) {
