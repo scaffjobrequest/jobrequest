@@ -1243,6 +1243,8 @@ function closeSuccessPopup() {
 
   renderSelectedFiles();
 
+  document.getElementById('photos').value = '';
+
 }
     function renderSelectedFiles() {
 
@@ -1253,8 +1255,7 @@ function closeSuccessPopup() {
 
   if(selectedFiles.length === 0) {
 
-    container.innerHTML =
-      'No images selected';
+    container.innerHTML = '';
 
     return;
 
@@ -1264,21 +1265,19 @@ function closeSuccessPopup() {
     selectedFiles.map((file, index) => `
 
       <div
-        class="flex items-center justify-between bg-slate-100 rounded-lg px-3 py-2 mt-2"
+        class="inline-flex items-center gap-2 bg-slate-200 rounded-full px-3 py-1 mr-2 mt-2 text-sm"
       >
 
-        <span class="text-sm truncate">
-
+        <span>
           📷 ${file.name}
-
         </span>
 
         <button
           type="button"
           onclick="removeFile(${index})"
-          class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm"
+          class="text-red-500 font-bold hover:text-red-700"
         >
-          Remove
+          ×
         </button>
 
       </div>
