@@ -663,18 +663,24 @@ submitButton.innerText = 'Submitting...';
 
   try {
 
-const photoBase64 = [];
+data.photos = [];
 
-for(const file of selectedFiles) {
+if(selectedFiles.length > 0){
 
-  const base64 =
-    await toBase64(file);
+  const photoBase64 = [];
 
-  photoBase64.push(base64);
+  for(const file of selectedFiles){
+
+    const base64 =
+      await toBase64(file);
+
+    photoBase64.push(base64);
+
+  }
+
+  data.photos = photoBase64;
 
 }
-
-data.photos = [];
 
 const response = await fetch(API_URL, {
 
