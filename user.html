@@ -1056,11 +1056,12 @@ document
               >
 
               <button
-                onclick="saveWorkOrder('${result.jobId}')"
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg"
-              >
-                Save WO
-              </button>
+  id="saveWOButton"
+  onclick="saveWorkOrder('${result.jobId}')"
+  class="bg-blue-600 text-white px-4 py-2 rounded-lg"
+>
+  Save WO
+</button>
 
             </div>
 
@@ -1162,20 +1163,13 @@ async function saveWorkOrder() {
 
   alert('Work Order Saved');
 
-  const response = await fetch(
-    `${API_URL}?action=getJob&jobId=${currentJobId}`
-  );
+  location.reload();
 
-  const updatedResult = await response.json();
+} else {
 
-  document.getElementById('workOrderSection')
-  .classList.add('hidden');
+  alert('Save Failed');
 
-  document.getElementById('workOrderDisplay')
-  .classList.remove('hidden');
-
-  document.getElementById('resultWorkOrder')
-  .innerText = updatedResult.workOrder;
+}
 
 } else {
 
