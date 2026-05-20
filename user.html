@@ -663,24 +663,6 @@ submitButton.innerText = 'Submitting...';
 
   try {
 
-data.photos = [];
-
-if(selectedFiles.length > 0){
-
-  const photoBase64 = [];
-
-  for(const file of selectedFiles){
-
-    const base64 =
-      await toBase64(file);
-
-    photoBase64.push(base64);
-
-  }
-
-  data.photos = photoBase64;
-
-}
 
 const response = await fetch(API_URL, {
 
@@ -1323,26 +1305,7 @@ function closeSuccessPopup() {
   renderSelectedFiles();
 
 }
-    function toBase64(file) {
-
-  return new Promise((resolve) => {
-
-    const reader =
-      new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-
-      resolve(
-        reader.result.split(',')[1]
-      );
-
-    };
-
-  });
-
-}
+    
 </script>
 </body>
 </html>
