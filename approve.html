@@ -90,10 +90,6 @@
           </th>
 
           <th class="border p-3 text-center">
-            Images
-          </th>
-
-          <th class="border p-3 text-center">
             Area
           </th>
 
@@ -107,6 +103,10 @@
 
           <th class="border p-3 text-center">
             Due Date
+          </th>
+          
+          <th class="border p-3 text-center">
+            Images
           </th>
 
           <th class="border p-3 text-center">
@@ -123,6 +123,28 @@
 
     </table>
 
+    <div class="flex justify-center items-center gap-4 mt-6">
+
+  <button
+    onclick="prevPage()"
+    class="bg-slate-300 px-4 py-2 rounded-lg"
+  >
+    ← Back
+  </button>
+
+  <span id="pageInfo" class="font-semibold">
+    Page 1
+  </span>
+
+  <button
+    onclick="nextPage()"
+    class="bg-slate-300 px-4 py-2 rounded-lg"
+  >
+    Next →
+  </button>
+
+</div>
+
   </div>
 
 </div>
@@ -134,7 +156,11 @@
 
 const API_URL =
 'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
+let currentPage = 1;
 
+const rowsPerPage = 15;
+
+let allJobs = [];
 // =====================
 // LOAD PENDING JOBS
 // =====================
@@ -156,7 +182,7 @@ async function loadPendingJobs() {
 
     // NO DATA
 
-    if(jobs.length === 0) {
+    if(allJobs.length === 0) {
 
       tbody.innerHTML = `
 
@@ -179,7 +205,16 @@ async function loadPendingJobs() {
 
     // LOOP JOBS
 
-    jobs.forEach(job => {
+    const start =
+  (currentPage - 1) * rowsPerPage;
+
+const end =
+  start + rowsPerPage;
+
+const jobs =
+  allJobs.slice(start, end);
+
+jobs.forEach(job => {
 
       const row = `
 
@@ -193,8 +228,22 @@ async function loadPendingJobs() {
             ${job.description}
           </td>
 
+          <td class="border p-3 text-center">
+            ${job.area}
+          </td>
           
-<td>
+          <td class="border p-3 text-center">
+            ${job.workType}
+          </td>
+
+          <td class="border p-3 text-center">
+            ${job.quantity} m³
+          </td>
+
+          <td class="border p-3 text-center">
+            ${formatDate(job.dueDate)}
+          </td>
+          <td>
 
   ${
     job.images && job.images.length > 0
@@ -214,21 +263,6 @@ async function loadPendingJobs() {
   }
 
 </td>
-          <td class="border p-3 text-center">
-            ${job.area}
-          </td>
-          
-          <td class="border p-3 text-center">
-            ${job.workType}
-          </td>
-
-          <td class="border p-3 text-center">
-            ${job.quantity} m³
-          </td>
-
-          <td class="border p-3 text-center">
-            ${formatDate(job.dueDate)}
-          </td>
 
           <td class="border p-3">
 
@@ -263,6 +297,7 @@ async function loadPendingJobs() {
       tbody.innerHTML += row;
 
     });
+    updatePageInfo();
 
   } catch(error) {
 
@@ -449,7 +484,45 @@ function showImages(images) {
 
 }
 
-function closeImagePopup() {
+function closeImagePopup() 
+  function updatePageInfo() {
+
+  const totalPages =
+    Math.ceil(allJobs.length / rowsPerPage);
+
+  document.getElementById('pageInfo')
+  .innerText =
+    `Page ${currentPage} / ${totalPages}`;
+
+}
+
+function nextPage() {
+
+  const totalPages =
+    Math.ceil(allJobs.length / rowsPerPage);
+
+  if(currentPage < totalPages) {
+
+    currentPage++;
+
+    loadPendingJobs();
+
+  }
+
+}
+
+function prevPage() {
+
+  if(currentPage > 1) {
+
+    currentPage--;
+
+    loadPendingJobs();
+
+  }
+
+}
+{
 
   document.getElementById('imagePopup')
   ?.remove();
