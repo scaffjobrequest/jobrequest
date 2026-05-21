@@ -658,7 +658,24 @@ submitButton.innerText = 'Submitting...';
     remark:
     document.getElementById('remark').value
 
+    photos: []
+
   };
+    for (const file of selectedFiles) {
+
+  const base64 = await toBase64(file);
+
+  data.photos.push({
+
+    name: file.name,
+
+    mimeType: file.type,
+
+    data: base64
+
+  });
+
+}
 
   try {
 
