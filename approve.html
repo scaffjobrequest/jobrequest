@@ -252,7 +252,7 @@ pageJobs.forEach(job => {
     ?
 
     `<button
-        onclick='showImages(${JSON.stringify(job.images)})'
+        onclick="showImages('${job.images}')"
         class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs"
       >
         View
