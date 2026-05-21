@@ -502,6 +502,14 @@ function updatePageInfo() {
   .innerText =
     `Page ${currentPage} / ${totalPages}`;
 
+  document.querySelector(
+    'button[onclick="prevPage()"]'
+  ).disabled = currentPage === 1;
+
+  document.querySelector(
+    'button[onclick="nextPage()"]'
+  ).disabled = currentPage === totalPages;
+
 }
 
 function nextPage() {
