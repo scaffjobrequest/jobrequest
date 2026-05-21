@@ -173,7 +173,7 @@ async function loadPendingJobs() {
       `${API_URL}?action=getPendingJobs`
     );
 
-    const jobs = await response.json();
+    allJobs = await response.json();
 
     const tbody =
       document.getElementById('jobTableBody');
@@ -211,10 +211,10 @@ async function loadPendingJobs() {
 const end =
   start + rowsPerPage;
 
-const jobs =
+const pageJobs =
   allJobs.slice(start, end);
 
-jobs.forEach(job => {
+pageJobs.forEach(job => {
 
       const row = `
 
@@ -484,8 +484,14 @@ function showImages(images) {
 
 }
 
-function closeImagePopup() 
-  function updatePageInfo() {
+function closeImagePopup() {
+
+  document.getElementById('imagePopup')
+  ?.remove();
+
+}
+
+function updatePageInfo() {
 
   const totalPages =
     Math.ceil(allJobs.length / rowsPerPage);
@@ -520,12 +526,6 @@ function prevPage() {
     loadPendingJobs();
 
   }
-
-}
-{
-
-  document.getElementById('imagePopup')
-  ?.remove();
 
 }
 </script>
