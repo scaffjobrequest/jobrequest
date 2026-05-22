@@ -591,7 +591,7 @@ for (const row of workRows) {
   const photoInput =
     row.querySelector('.workPhotos');
 
-  if(photoInput.files.length > 3) {
+  if(row.selectedFiles.length > 3) {
 
     alert('Max 3 photos per work');
 
@@ -608,7 +608,7 @@ for (const row of workRows) {
 
   const uploadedPhotos = [];
 
-  for (const file of photoInput.files) {
+  for (const file of row.selectedFiles) {
 
     const formData = new FormData();
 
@@ -848,7 +848,7 @@ function addWorkRow() {
         >
 
       </div>
-      <div>
+<div>
 
   <label class="block text-sm font-semibold mb-2">
     Upload Photos
@@ -858,9 +858,9 @@ function addWorkRow() {
     type="file"
     class="workPhotos w-full border border-slate-300 rounded-lg p-3"
     accept="image/*"
-    multiple
-    required
   >
+
+  <div class="photoList mt-2 text-sm text-slate-600"></div>
 
   <p class="text-xs text-slate-400 mt-1">
     Max 3 photos
@@ -885,7 +885,101 @@ function addWorkRow() {
   `;
 
   container.appendChild(row);
+const photoInput =
+row.querySelector('.workPhotos');
 
+const photoList =
+row.querySelector('.photoList');
+
+row.selectedFiles = [];
+
+photoInput.addEventListener('change', (e) => {
+
+  const file = e.target.files[0];
+
+  if(!file) return;
+
+  if(row.selectedFiles.length >= 3) {
+
+    alert('Max 3 photos');
+
+    photoInput.value = '';
+
+    return;
+
+  }
+
+  row.selectedFiles.push(file);
+
+  renderPhotoList();
+
+  photoInput.value = '';
+
+});
+
+function renderPhotoList() {
+
+  photoList.innerHTML = '';
+
+  row.selectedFiles.forEach((file, index) => {
+
+    photoList.innerHTML += `
+
+      <div class="flex justify-between items-center bg-slate-100 rounded px-2 py-1 mt-1">
+
+        <span>${file.name}</span>
+
+        <button
+          type="button"
+          class="text-red-500 text-xs"
+          onclick="removePhoto(this, ${index})"
+        >
+          ✕
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+window.removePhoto = function(btn, index) {
+
+  const workRow =
+    btn.closest('.border');
+
+  workRow.selectedFiles.splice(index, 1);
+
+  const photoList =
+    workRow.querySelector('.photoList');
+
+  photoList.innerHTML = '';
+
+  workRow.selectedFiles.forEach((file, i) => {
+
+    photoList.innerHTML += `
+
+      <div class="flex justify-between items-center bg-slate-100 rounded px-2 py-1 mt-1">
+
+        <span>${file.name}</span>
+
+        <button
+          type="button"
+          class="text-red-500 text-xs"
+          onclick="removePhoto(this, ${i})"
+        >
+          ✕
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+};
 }
 // ====================
 // ADD MATERIAL ROW
