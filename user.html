@@ -138,26 +138,6 @@
       <div>
 
         <label class="block text-sm font-semibold mb-2">
-          Work Action
-        </label>
-
-        <select
-          id="workAction"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-          <option value="">Select</option>
-          <option value="Install">Install</option>
-          <option value="Remove">Remove</option>
-
-        </select>
-
-      </div>
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
           Work Type
         </label>
 
@@ -209,30 +189,6 @@
 
 </div>
     
-    <!-- LOCATION -->
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-      <div>
-
-        <label class="block text-sm font-semibold mb-2">
-          Location
-        </label>
-
-        <select
-          id="location"
-          required
-          class="w-full border border-slate-300 rounded-lg p-3"
-        >
-
-          <option value="">Select</option>
-          <option value="Internal">Internal</option>
-          <option value="External">External</option>
-
-        </select>
-
-      </div>
-
       <div>
 
         <label class="block text-sm font-semibold mb-2">
@@ -248,41 +204,6 @@
         >
 
       </div>
-
-    </div>
-
-    <!-- CONTACT -->
-
-    <div>
-
-      <label class="block text-sm font-semibold mb-2">
-        Contact
-      </label>
-
-      <input
-        type="text"
-        id="contact"
-        placeholder="ชื่อหน้างานและเบอร์ 4 ตัวท้าย"
-        required
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
-
-    </div>
-
-    <!-- DUE DATE -->
-
-    <div>
-
-      <label class="block text-sm font-semibold mb-2">
-        Due Date
-      </label>
-
-      <input
-        type="date"
-        id="dueDate"
-        required
-        class="w-full border border-slate-300 rounded-lg p-3"
-      >
 
     </div>
 
@@ -636,16 +557,28 @@ for (const row of workRows) {
 
   works.push({
 
-    description:
-      row.querySelector('.workDescription').value,
+  workAction:
+    row.querySelector('.workAction').value,
 
-    quantity:
-      row.querySelector('.workQuantity').value,
+  description:
+    row.querySelector('.workDescription').value,
 
-    photos:
-      uploadedPhotos
+  quantity:
+    row.querySelector('.workQuantity').value,
 
-  });
+  location:
+    row.querySelector('.workLocation').value,
+
+  contact:
+    row.querySelector('.workContact').value,
+
+  dueDate:
+    row.querySelector('.workDueDate').value,  
+
+  photos:
+    uploadedPhotos
+
+});
 
 }
   const hasEmptyWork = works.some(work =>
@@ -674,25 +607,13 @@ if(hasEmptyWork) {
     phoneNumber:
     document.getElementById('phoneNumber').value,
 
-    workAction:
-    document.getElementById('workAction').value,
-
     workType:
     document.getElementById('workType').value,
 
     works: works,
 
-    location:
-    document.getElementById('location').value,
-
     area:
     document.getElementById('area').value,
-
-    contact:
-    document.getElementById('contact').value,
-
-    dueDate:
-    document.getElementById('dueDate').value,
 
     remark:
     document.getElementById('remark').value,
@@ -848,6 +769,72 @@ function addWorkRow() {
         >
 
       </div>
+      <div>
+
+  <label class="block text-sm font-semibold mb-2">
+    Work Action
+  </label>
+
+  <select
+    class="workAction w-full border border-slate-300 rounded-lg p-3"
+    required
+  >
+
+    <option value="">Select</option>
+    <option value="Install">Install</option>
+    <option value="Remove">Remove</option>
+
+  </select>
+
+</div>
+<div>
+
+  <label class="block text-sm font-semibold mb-2">
+    Location
+  </label>
+
+  <select
+    class="workLocation w-full border border-slate-300 rounded-lg p-3"
+    required
+  >
+
+    <option value="">Select</option>
+    <option value="Internal">Internal</option>
+    <option value="External">External</option>
+
+  </select>
+
+</div>
+
+<div>
+
+  <label class="block text-sm font-semibold mb-2">
+    Contact
+  </label>
+
+  <input
+    type="text"
+    class="workContact w-full border border-slate-300 rounded-lg p-3"
+    placeholder="ชื่อหน้างานและเบอร์ 4 ตัวท้าย"
+    required
+  >
+
+</div>
+
+<div>
+
+  <label class="block text-sm font-semibold mb-2">
+    Due Date
+  </label>
+
+  <input
+    type="date"
+    class="workDueDate w-full border border-slate-300 rounded-lg p-3"
+    required
+  >
+
+</div>
+
 <div>
 
   <label class="block text-sm font-semibold mb-2">
