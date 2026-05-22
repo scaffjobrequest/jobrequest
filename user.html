@@ -303,20 +303,20 @@
 
     </div>
 
-    <!-- PHOTO LINKS -->
+<!-- PHOTO UPLOAD -->
 
 <div>
 
   <label class="block text-sm font-semibold mb-2">
-    Photo Links
+    Upload Photo
   </label>
 
-  <textarea
-    id="photoLinks"
-    rows="4"
-    placeholder="วางลิงก์รูป/ชีตที่มีรูปจุดตั้งที่นี่"
+  <input
+    type="file"
+    id="photoFile"
+    accept="image/*"
     class="w-full border border-slate-300 rounded-lg p-3"
-  ></textarea>
+  >
 
 </div>
 
@@ -613,7 +613,37 @@ e.target.querySelector('button[type="submit"]');
 submitButton.disabled = true;
 
 submitButton.innerText = 'Submitting...';
+const fileInput =
+document.getElementById('photoFile');
 
+let photoUrl = '';
+
+if(fileInput.files.length > 0) {
+
+  const file = fileInput.files[0];
+
+  const formData = new FormData();
+
+  formData.append('image', file);
+
+  const imgbbResponse = await fetch(
+
+    'https://api.imgbb.com/1/upload?key=f7072406665a4bada5b432d09e33a34d',
+
+    {
+      method: 'POST',
+      body: formData
+    }
+
+  );
+
+  const imgbbData =
+  await imgbbResponse.json();
+
+  photoUrl =
+  imgbbData.data.url;
+
+}
   const data = {
 
     requesterName:
@@ -649,7 +679,7 @@ submitButton.innerText = 'Submitting...';
     remark:
     document.getElementById('remark').value,
 
-    photos: document.getElementById('photoLinks').value
+    photos: photoUrl
 
   };
     
