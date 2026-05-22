@@ -75,7 +75,7 @@
 
   <div class="overflow-auto">
 
-    <table class="w-full border-collapse">
+    <table class="w-full border border-slate-200 table-fixed">
 
       <thead>
 
@@ -105,7 +105,7 @@
             Due Date
           </th>
           
-          <th class="border p-3 text-center">
+          <th class="border p-3 text-center w-24">
             Images
           </th>
 
@@ -117,7 +117,7 @@
 
       </thead>
 
-      <tbody id="jobTableBody">
+      <tbody id="jobTableBody" class="divide-y divide-slate-200">
 
       </tbody>
 
@@ -254,7 +254,7 @@ pageJobs.forEach(job => {
 
     `<button
         onclick="showImages('${job.images}')"
-        class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs"
+        class="bg-blue-500 hover:bg-blue-600 text-white w-12 py-1 rounded text-xs"
       >
         View
       </button>`
