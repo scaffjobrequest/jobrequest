@@ -298,6 +298,7 @@
     type="file"
     id="photoFile"
     accept="image/*"
+    required
     class="w-full border border-slate-300 rounded-lg p-3"
   >
 
@@ -627,6 +628,42 @@ if(fileInput.files.length > 0) {
   imgbbData.data.url;
 
 }
+  const workRows =
+document.querySelectorAll('#workItems > div');
+
+const works = [];
+
+workRows.forEach(row => {
+
+  works.push({
+
+    description:
+      row.querySelector('.workDescription').value,
+
+    quantity:
+      row.querySelector('.workQuantity').value
+
+  });
+
+});
+  const hasEmptyWork = works.some(work =>
+  !work.description || !work.quantity
+);
+
+if(hasEmptyWork) {
+
+  alert('Please fill all work items');
+
+  hideLoading();
+
+  submitButton.disabled = false;
+
+  submitButton.innerText =
+    'Submit Request';
+
+  return;
+
+}
   const data = {
 
     requesterName:
@@ -782,18 +819,18 @@ function addWorkRow() {
 
       <div>
 
-        <label class="block text-sm font-semibold mb-2">
-          Description
-        </label>
+  <label class="block text-sm font-semibold mb-2">
+    Description
+  </label>
 
-        <textarea
-          class="workDescription w-full border border-slate-300 rounded-lg p-3"
-          rows="4"
-          placeholder="ชื่องานและรายละเอียด"
-          required
-        ></textarea>
+  <textarea
+  class="workDescription w-full border border-slate-300 rounded-lg p-3 resize-y min-h-[48px]"
+  rows="1"
+  placeholder="ชื่องานและรายละเอียด"
+  required
+></textarea>
 
-      </div>
+</div>
 
       <div>
 
@@ -960,24 +997,6 @@ rows.forEach(row => {
 
 });
 
-  const workRows =
-document.querySelectorAll('#workItems > div');
-
-const works = [];
-
-workRows.forEach(row => {
-
-  works.push({
-
-    description:
-      row.querySelector('.workDescription').value,
-
-    quantity:
-      row.querySelector('.workQuantity').value
-
-  });
-
-});
 
 const data = {
 
