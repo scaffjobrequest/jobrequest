@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Planner</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link
+href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css"
+rel="stylesheet"
+/>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<style>
+
+#external-events {
+
+  max-height: 80vh;
+  overflow-y: auto;
+
+}
+
+.fc-event {
+
+  cursor: pointer;
+
+}
+
+</style>
+
+</head>
+
+<body class="bg-slate-100">
+
+<div class="p-6">
+
+<div class="grid grid-cols-12 gap-6">
+
+<!-- LEFT -->
+
+<div class="col-span-3">
+
+<div class="bg-white rounded-xl shadow p-4">
+
+<h2 class="text-xl font-bold mb-4">
+Pending Works
+</h2>
+
+<div id="external-events"></div>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="col-span-9">
+
+<div class="bg-white rounded-xl shadow p-4">
+
+<div id="calendar"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const API_URL =
+'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
+
+let calendar;
+
+loadPlanner();
+
+async function loadPlanner() {
+
+  const response =
+    await fetch(
+`${API_URL}?action=getPlannerWorks`
+    );
+
+  const data =
+    await response.json();
+
+  renderPending(
+    data.pending
+  );
+
+  renderCalendar(
+    data.scheduled
+  );
+
+}
+
+// =====================
+// PENDING
+// =====================
+
+function renderPending(works) {
+
+  const container =
+document.getElementById(
+'external-events'
+);
+
+  container.innerHTML = '';
+
+  works.forEach(work => {
+
+    const div =
+document.createElement('div');
+
+    div.className =
+'bg-slate-100 border rounded-lg p-3 mb-3 text-sm';
+
+    div.innerHTML = `
+
+<div class="font-semibold mb-1">
+${work.workType}
+</div>
+
+<div class="text-slate-700">
+${work.area}
+</div>
+
+<div class="text-xs mt-2">
+${work.workOrder}
+</div>
+
+<div class="text-xs text-slate-500 mt-1">
+${work.description}
+</div>
+
+<button
+onclick='addToCalendar(${JSON.stringify(work)})'
+class='mt-3 bg-blue-600 text-white px-3 py-1 rounded text-xs'
+>
+Add to Calendar
+</button>
+
+`;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+// =====================
+// CALENDAR
+// =====================
+
+function renderCalendar(events) {
+
+  const calendarEl =
+document.getElementById(
+'calendar'
+);
+
+  calendar =
+new FullCalendar.Calendar(
+
+calendarEl,
+
+{
+
+initialView: 'dayGridMonth',
+
+height: 'auto',
+
+editable: true,
+
+events: events.map(e => ({
+
+title: e.title,
+
+start: e.start,
+
+extendedProps: {
+
+row: e.row
+
+}
+
+})),
+
+eventDrop: async function(info) {
+
+  await updateWorkDate(
+
+    info.event.extendedProps.row,
+
+    info.event.startStr
+
+  );
+
+}
+
+});
+
+calendar.render();
+
+}
+
+// =====================
+// ADD TO CALENDAR
+// =====================
+
+async function addToCalendar(work) {
+
+  const date =
+prompt('Enter Date (YYYY-MM-DD)');
+
+  if(!date) return;
+
+  await updateWorkDate(
+    work.row,
+    date
+  );
+
+  location.reload();
+
+}
+
+// =====================
+// UPDATE DATE
+// =====================
+
+async function updateWorkDate(
+row,
+date
+) {
+
+  await fetch(API_URL, {
+
+method: 'POST',
+
+headers: {
+
+'Content-Type':
+'application/json'
+
+},
+
+body: JSON.stringify({
+
+type: 'plannerUpdate',
+
+row: row,
+
+date: date
+
+})
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
