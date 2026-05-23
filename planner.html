@@ -31,6 +31,21 @@ rel="stylesheet"
 
   cursor: pointer;
 
+  white-space: normal !important;
+
+  height: auto !important;
+
+  min-height: 40px;
+
+  padding: 2px;
+
+  font-size: 11px;
+
+}
+  .fc-daygrid-event-harness {
+
+  margin-bottom: 4px;
+
 }
 
 </style>
@@ -215,6 +230,25 @@ eventDrop: async function(info) {
 
   );
 
+},
+
+eventClick: async function(info) {
+
+  const confirmDelete =
+confirm(
+'Remove this work from calendar?'
+);
+
+  if(!confirmDelete) return;
+
+  await removeWorkDate(
+
+    info.event.extendedProps.row
+
+  );
+
+  info.event.remove();
+
 }
 
 });
@@ -304,6 +338,34 @@ date: date
 })
 
 });
+
+}
+  // =====================
+// REMOVE DATE
+// =====================
+
+async function removeWorkDate(row) {
+
+  await fetch(API_URL, {
+
+    method: 'POST',
+
+    headers: {
+
+      'Content-Type':
+      'application/json'
+
+    },
+
+    body: JSON.stringify({
+
+      type: 'plannerRemove',
+
+      row: row
+
+    })
+
+  });
 
 }
 
