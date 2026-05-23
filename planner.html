@@ -247,79 +247,6 @@ eventClick: function(info) {
 
 calendar.render();
 }
-// =====================
-// MODAL BUTTONS
-// =====================
-
-const duplicateBtn =
-document.getElementById(
-'duplicateBtn'
-);
-
-const removeBtn =
-document.getElementById(
-'removeBtn'
-);
-
-const closeModalBtn =
-document.getElementById(
-'closeModalBtn'
-);
-
-// DUPLICATE
-
-duplicateBtn.onclick =
-async () => {
-
-  const date =
-document.getElementById(
-'duplicateDate'
-).value;
-
-  if(!date) {
-
-    alert('Please select date');
-
-    return;
-
-  }
-
-  await duplicateWork(
-    selectedRow,
-    date
-  );
-
-  location.reload();
-
-};
-
-// REMOVE
-
-removeBtn.onclick =
-async () => {
-
-  await removeWorkDate(
-    selectedRow
-  );
-
-  location.reload();
-
-};
-
-// CLOSE
-
-closeModalBtn.onclick =
-() => {
-
-  document
-    .getElementById(
-      'eventModal'
-    )
-    .classList.add(
-      'hidden'
-    );
-
-};
 
 // =====================
 // WORK TYPE COLOR
@@ -465,6 +392,84 @@ date
   });
 
 }
+  // =====================
+// MODAL ACTIONS
+// =====================
+
+document.addEventListener(
+'DOMContentLoaded',
+() => {
+
+  // DUPLICATE
+
+  document
+  .getElementById('duplicateBtn')
+  .addEventListener(
+    'click',
+    async () => {
+
+      const date =
+      document.getElementById(
+        'duplicateDate'
+      ).value;
+
+      if(!date) {
+
+        alert(
+          'Please select date'
+        );
+
+        return;
+
+      }
+
+      await duplicateWork(
+        selectedRow,
+        date
+      );
+
+      location.reload();
+
+    }
+  );
+
+  // REMOVE
+
+  document
+  .getElementById('removeBtn')
+  .addEventListener(
+    'click',
+    async () => {
+
+      await removeWorkDate(
+        selectedRow
+      );
+
+      location.reload();
+
+    }
+  );
+
+  // CLOSE
+
+  document
+  .getElementById('closeModalBtn')
+  .addEventListener(
+    'click',
+    () => {
+
+      document
+      .getElementById(
+        'eventModal'
+      )
+      .classList.add(
+        'hidden'
+      );
+
+    }
+  );
+
+});
 </script>
 <!-- EVENT MODAL -->
 
