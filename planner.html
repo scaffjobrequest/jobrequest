@@ -243,31 +243,6 @@ eventClick: function(info) {
 
 }
 
-  // =====================
-  // REMOVE
-  // =====================
-
-  if(action === '2') {
-
-    const confirmDelete =
-confirm(
-'Remove this work from calendar?'
-    );
-
-    if(!confirmDelete) return;
-
-    await removeWorkDate(
-
-      info.event.extendedProps.row
-
-    );
-
-    info.event.remove();
-
-  }
-
-}
-
 });
 
 calendar.render();
