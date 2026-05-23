@@ -132,7 +132,7 @@ div.style.backgroundColor =
 ${work.workType}
 </div>
 
-<div class="text-slate-700">
+<div class="text-white">
 ${work.area}
 </div>
 
@@ -140,7 +140,7 @@ ${work.area}
 ${work.workOrder}
 </div>
 
-<div class="text-xs text-slate-500 mt-1">
+<div class="text-xs text-white mt-1">
 ${work.description}
 </div>
 
@@ -220,7 +220,10 @@ eventDrop: async function(info) {
 });
 
 calendar.render();
-  // =====================
+
+}
+
+// =====================
 // WORK TYPE COLOR
 // =====================
 
@@ -229,26 +232,24 @@ function getColor(type) {
   switch(type) {
 
     case 'CM':
-      return '#86efac'; // เขียวอ่อน
+      return '#86efac';
 
     case 'SD':
-      return '#7dd3fc'; // ฟ้าอ่อน
+      return '#7dd3fc';
 
     case 'QSD':
-      return '#c4b5fd'; // ม่วงอ่อน
+      return '#c4b5fd';
 
     case 'ANSD':
-      return '#fdba74'; // ส้มอ่อน
+      return '#fdba74';
 
     case 'BD':
-      return '#fca5a5'; // แดงอ่อน
+      return '#fca5a5';
 
     default:
       return '#cbd5e1';
 
   }
-
-}
 
 }
 
