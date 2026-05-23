@@ -96,7 +96,7 @@ const API_URL =
 'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
 
 let calendar;
-
+let selectedRow = null;
 loadPlanner();
 
 async function loadPlanner() {
@@ -232,43 +232,16 @@ eventDrop: async function(info) {
 
 },
 
-eventClick: async function(info) {
+eventClick: function(info) {
 
-  const action = prompt(
+  selectedRow =
+    info.event.extendedProps.row;
 
-`Select Action
+  document
+    .getElementById('eventModal')
+    .classList.remove('hidden');
 
-1 = Duplicate
-2 = Remove
-
-Enter 1 or 2`
-
-  );
-
-  // =====================
-  // DUPLICATE
-  // =====================
-
-  if(action === '1') {
-
-    const newDate =
-prompt(
-'Enter New Date (YYYY-MM-DD)'
-    );
-
-    if(!newDate) return;
-
-    await duplicateWork(
-
-      info.event.extendedProps.row,
-
-      newDate
-
-    );
-
-    location.reload();
-
-  }
+}
 
   // =====================
   // REMOVE
@@ -298,7 +271,57 @@ confirm(
 });
 
 calendar.render();
+// =====================
+// MODAL BUTTONS
+// =====================
 
+document
+.getElementById('duplicateBtn')
+.addEventListener('click', async () => {
+
+  const date =
+document.getElementById(
+'duplicateDate'
+).value;
+
+  if(!date) {
+
+    alert('Please select date');
+
+    return;
+
+  }
+
+  await duplicateWork(
+    selectedRow,
+    date
+  );
+
+  location.reload();
+
+});
+
+document
+.getElementById('removeBtn')
+.addEventListener('click', async () => {
+
+  await removeWorkDate(
+    selectedRow
+  );
+
+  location.reload();
+
+});
+
+document
+.getElementById('closeModalBtn')
+.addEventListener('click', () => {
+
+  document
+    .getElementById('eventModal')
+    .classList.add('hidden');
+
+});
 }
 
 // =====================
@@ -446,6 +469,52 @@ date
 
 }
 </script>
+<!-- EVENT MODAL -->
 
+<div
+  id="eventModal"
+  class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+>
+
+  <div class="bg-white rounded-xl p-6 w-80">
+
+    <h2 class="text-xl font-bold mb-4">
+      Event Action
+    </h2>
+
+    <input
+      type="date"
+      id="duplicateDate"
+      class="w-full border rounded-lg p-3 mb-4"
+    >
+
+    <div class="flex gap-2">
+
+      <button
+        id="duplicateBtn"
+        class="flex-1 bg-blue-600 text-white py-2 rounded-lg"
+      >
+        Duplicate
+      </button>
+
+      <button
+        id="removeBtn"
+        class="flex-1 bg-red-600 text-white py-2 rounded-lg"
+      >
+        Remove
+      </button>
+
+    </div>
+
+    <button
+      id="closeModalBtn"
+      class="w-full mt-3 bg-slate-300 py-2 rounded-lg"
+    >
+      Cancel
+    </button>
+
+  </div>
+
+</div>
 </body>
 </html>
