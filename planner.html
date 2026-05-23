@@ -271,13 +271,30 @@ confirm(
 });
 
 calendar.render();
+
 // =====================
 // MODAL BUTTONS
 // =====================
 
-document
-.getElementById('duplicateBtn')
-.addEventListener('click', async () => {
+const duplicateBtn =
+document.getElementById(
+'duplicateBtn'
+);
+
+const removeBtn =
+document.getElementById(
+'removeBtn'
+);
+
+const closeModalBtn =
+document.getElementById(
+'closeModalBtn'
+);
+
+// DUPLICATE
+
+duplicateBtn.onclick =
+async () => {
 
   const date =
 document.getElementById(
@@ -299,11 +316,12 @@ document.getElementById(
 
   location.reload();
 
-});
+};
 
-document
-.getElementById('removeBtn')
-.addEventListener('click', async () => {
+// REMOVE
+
+removeBtn.onclick =
+async () => {
 
   await removeWorkDate(
     selectedRow
@@ -311,18 +329,22 @@ document
 
   location.reload();
 
-});
+};
 
-document
-.getElementById('closeModalBtn')
-.addEventListener('click', () => {
+// CLOSE
+
+closeModalBtn.onclick =
+() => {
 
   document
-    .getElementById('eventModal')
-    .classList.add('hidden');
+    .getElementById(
+      'eventModal'
+    )
+    .classList.add(
+      'hidden'
+    );
 
-});
-}
+};
 
 // =====================
 // WORK TYPE COLOR
