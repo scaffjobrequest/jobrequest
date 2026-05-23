@@ -122,9 +122,10 @@ document.getElementById(
     const div =
 document.createElement('div');
 
-    div.className =
-'bg-slate-100 border rounded-lg p-3 mb-3 text-sm';
-
+div.className =
+'border rounded-lg p-3 mb-3 text-sm text-white';
+div.style.backgroundColor =
+  getColor(work.workType);
     div.innerHTML = `
 
 <div class="font-semibold mb-1">
@@ -188,9 +189,17 @@ title: e.title,
 
 start: e.start,
 
+backgroundColor:
+  getColor(e.workType),
+
+borderColor:
+  getColor(e.workType),
+
+textColor: '#ffffff',
+
 extendedProps: {
 
-row: e.row
+  row: e.row
 
 }
 
@@ -211,6 +220,35 @@ eventDrop: async function(info) {
 });
 
 calendar.render();
+  // =====================
+// WORK TYPE COLOR
+// =====================
+
+function getColor(type) {
+
+  switch(type) {
+
+    case 'CM':
+      return '#86efac'; // เขียวอ่อน
+
+    case 'SD':
+      return '#7dd3fc'; // ฟ้าอ่อน
+
+    case 'QSD':
+      return '#c4b5fd'; // ม่วงอ่อน
+
+    case 'ANSD':
+      return '#fdba74'; // ส้มอ่อน
+
+    case 'BD':
+      return '#fca5a5'; // แดงอ่อน
+
+    default:
+      return '#cbd5e1';
+
+  }
+
+}
 
 }
 
