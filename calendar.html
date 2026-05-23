@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+<meta charset="UTF-8">
+
+<title>Planner</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link
+href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css"
+rel="stylesheet"
+/>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<style>
+
+#external-events {
+
+  max-height: 80vh;
+  overflow-y: auto;
+
+}
+
+.fc-event {
+
+  cursor: pointer;
+
+  white-space: normal !important;
+
+  height: auto !important;
+
+  min-height: 40px;
+
+  padding: 2px;
+
+  font-size: 11px;
+
+}
+  .fc-daygrid-event-harness {
+
+  margin-bottom: 4px;
+
+}
+
+</style>
+
+</head>
+
+<body class="bg-slate-100">
+
+<div class="p-6">
+
+<div class="grid grid-cols-12 gap-6">
+
+<!-- RIGHT -->
+
+<div class="col-span-12">
+
+<div class="bg-white rounded-xl shadow p-4">
+
+<div id="calendar"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const API_URL =
+'https://script.google.com/macros/s/AKfycbx6QV2vjlV_Oyp-5gQrke1smMrGORzccv2o_Q-Wf2PPYBNDwWgtLAp-KCMwjgxjEyPW/exec';
+
+let calendar;
+
+loadPlanner();
+
+async function loadPlanner() {
+
+  const response =
+    await fetch(
+`${API_URL}?action=getPlannerWorks`
+    );
+
+  const data =
+    await response.json();
+
+  renderCalendar(
+    data.scheduled
+  );
+
+}
+
+// =====================
+// CALENDAR
+// =====================
+
+function renderCalendar(events) {
+
+  const calendarEl =
+document.getElementById(
+'calendar'
+);
+
+  calendar =
+new FullCalendar.Calendar(
+
+calendarEl,
+
+{
+
+initialView: 'dayGridMonth',
+
+height: 'auto',
+
+editable: false,
+
+events: events.map(e => ({
+
+title: e.title,
+
+start: e.start,
+
+backgroundColor:
+  getColor(e.workType),
+
+borderColor:
+  getColor(e.workType),
+
+textColor: '#ffffff',
+
+extendedProps: {
+
+  row: e.row
+
+}
+
+})),
+  eventClick: function(info) {
+
+  alert(
+
+`${info.event.title}
+
+Date: ${info.event.startStr}`
+
+  );
+
+}
+
+});
+
+calendar.render();
+
+}
+
+// =====================
+// WORK TYPE COLOR
+// =====================
+
+function getColor(type) {
+
+  switch(type) {
+
+    case 'CM':
+      return '#86efac';
+
+    case 'SD':
+      return '#7dd3fc';
+
+    case 'QSD':
+      return '#c4b5fd';
+
+    case 'ANSD':
+      return '#fdba74';
+
+    case 'BD':
+      return '#fca5a5';
+
+    default:
+      return '#cbd5e1';
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
