@@ -234,20 +234,64 @@ eventDrop: async function(info) {
 
 eventClick: async function(info) {
 
-  const confirmDelete =
-confirm(
-'Remove this work from calendar?'
-);
+  const action = prompt(
 
-  if(!confirmDelete) return;
+`Select Action
 
-  await removeWorkDate(
+1 = Duplicate
+2 = Remove
 
-    info.event.extendedProps.row
+Enter 1 or 2`
 
   );
 
-  info.event.remove();
+  // =====================
+  // DUPLICATE
+  // =====================
+
+  if(action === '1') {
+
+    const newDate =
+prompt(
+'Enter New Date (YYYY-MM-DD)'
+    );
+
+    if(!newDate) return;
+
+    await duplicateWork(
+
+      info.event.extendedProps.row,
+
+      newDate
+
+    );
+
+    location.reload();
+
+  }
+
+  // =====================
+  // REMOVE
+  // =====================
+
+  if(action === '2') {
+
+    const confirmDelete =
+confirm(
+'Remove this work from calendar?'
+    );
+
+    if(!confirmDelete) return;
+
+    await removeWorkDate(
+
+      info.event.extendedProps.row
+
+    );
+
+    info.event.remove();
+
+  }
 
 }
 
@@ -368,7 +412,39 @@ async function removeWorkDate(row) {
   });
 
 }
+// =====================
+// DUPLICATE EVENT
+// =====================
 
+async function duplicateWork(
+row,
+date
+) {
+
+  await fetch(API_URL, {
+
+    method: 'POST',
+
+    headers: {
+
+      'Content-Type':
+      'application/json'
+
+    },
+
+    body: JSON.stringify({
+
+      type: 'plannerDuplicate',
+
+      row: row,
+
+      date: date
+
+    })
+
+  });
+
+}
 </script>
 
 </body>
