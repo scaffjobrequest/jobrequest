@@ -27,8 +27,11 @@ rel="stylesheet"
 
 }
 
+/* =========================
+EVENT STYLE
+========================= */
+
 .fc-event {
-  line-height: 1.2;
 
   cursor: pointer;
 
@@ -42,15 +45,43 @@ rel="stylesheet"
 
   font-size: 10px;
 
+  line-height: 1.2;
+
+  border-radius: 4px;
+
 }
-  .fc-daygrid-event-harness {
-    /* =========================
-DAY CELL FIXED HEIGHT
+
+/* =========================
+SPACE BETWEEN EVENTS
+========================= */
+
+.fc-daygrid-event-harness {
+
+  margin-bottom: 4px;
+
+}
+
+/* =========================
+FULL CALENDAR HEIGHT
+========================= */
+
+.fc {
+
+  height: 90vh !important;
+
+}
+
+/* =========================
+FIX ALL DAY CELL SIZE
 ========================= */
 
 .fc-daygrid-day-frame {
 
-  height: 180px !important;
+  height: 140px !important;
+
+  display: flex;
+
+  flex-direction: column;
 
 }
 
@@ -60,21 +91,23 @@ SCROLL INSIDE CELL
 
 .fc-daygrid-day-events {
 
-  max-height: 140px;
+  flex: 1;
 
   overflow-y: auto;
 
   overflow-x: hidden;
 
+  max-height: 110px;
+
 }
 
 /* =========================
-HIDE HORIZONTAL SCROLL
+HIDE GLOBAL SCROLL
 ========================= */
 
 .fc-scroller {
 
-  overflow-x: hidden !important;
+  overflow: hidden !important;
 
 }
 
@@ -84,7 +117,7 @@ SMALL SCROLLBAR
 
 .fc-daygrid-day-events::-webkit-scrollbar {
 
-  width: 6px;
+  width: 5px;
 
 }
 
@@ -93,10 +126,6 @@ SMALL SCROLLBAR
   background: #cbd5e1;
 
   border-radius: 999px;
-
-}
-
-  margin-bottom: 4px;
 
 }
 
@@ -171,7 +200,10 @@ calendarEl,
 
 initialView: 'dayGridMonth',
 
-height: '85vh',
+height: '90vh',
+contentHeight: 'auto',
+expandRows: true,
+aspectRatio: 2.2,
 
 editable: false,
 dayMaxEventRows: false,
