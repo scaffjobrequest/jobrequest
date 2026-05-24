@@ -28,6 +28,7 @@ rel="stylesheet"
 }
 
 .fc-event {
+  line-height: 1.2;
 
   cursor: pointer;
 
@@ -39,10 +40,61 @@ rel="stylesheet"
 
   padding: 2px;
 
-  font-size: 11px;
+  font-size: 10px;
 
 }
   .fc-daygrid-event-harness {
+    /* =========================
+DAY CELL FIXED HEIGHT
+========================= */
+
+.fc-daygrid-day-frame {
+
+  height: 180px !important;
+
+}
+
+/* =========================
+SCROLL INSIDE CELL
+========================= */
+
+.fc-daygrid-day-events {
+
+  max-height: 140px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+}
+
+/* =========================
+HIDE HORIZONTAL SCROLL
+========================= */
+
+.fc-scroller {
+
+  overflow-x: hidden !important;
+
+}
+
+/* =========================
+SMALL SCROLLBAR
+========================= */
+
+.fc-daygrid-day-events::-webkit-scrollbar {
+
+  width: 6px;
+
+}
+
+.fc-daygrid-day-events::-webkit-scrollbar-thumb {
+
+  background: #cbd5e1;
+
+  border-radius: 999px;
+
+}
 
   margin-bottom: 4px;
 
@@ -119,10 +171,12 @@ calendarEl,
 
 initialView: 'dayGridMonth',
 
-height: 'auto',
+height: '85vh',
 
 editable: false,
-
+dayMaxEventRows: false,
+fixedWeekCount: true,
+  
 events: events.map(e => ({
 
 title: e.title,
